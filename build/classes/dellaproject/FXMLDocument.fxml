@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.9999000000025" prefWidth="625.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="dellaproject.FXMLDocumentController">
+  <tabs>
+    <Tab text="Console">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="474.0" prefWidth="598.0">
+          <children>
+            <ListView layoutX="-5.0" layoutY="14.0" prefHeight="25.0" prefWidth="611.0" />
+            <TextField layoutX="52.0" layoutY="231.0" prefHeight="25.0" prefWidth="346.0" />
+            <TextArea editable="false" layoutX="13.0" layoutY="282.0" prefHeight="76.0" prefWidth="396.0" />
+            <TextArea editable="false" layoutX="13.0" layoutY="391.0" prefHeight="70.0" prefWidth="396.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Action Items :" />
+            <Text layoutX="16.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Action Items :" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+            <Text layoutX="13.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Action Item : " wrappingWidth="118.482421875" />
+            <Text layoutX="13.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" />
+            <Text layoutX="12.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :" />
+            <Text layoutX="15.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resolution :" />
+            <Label layoutX="220.0" layoutY="18.0" prefHeight="17.0" prefWidth="43.0" text="Console" />
+            <Text layoutX="435.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sorting Direction :" />
+            <Text layoutX="436.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Sorting Factor :" />
+            <Text layoutX="436.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Second Sorting Factor :" />
+            <Text layoutX="438.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inclusion Factor :" />
+            <Text layoutX="435.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dates" />
+            <Text layoutX="458.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creation :" />
+            <Text layoutX="475.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Due   :" />
+            <Text layoutX="434.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Action Item" />
+            <Text layoutX="471.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status :" wrappingWidth="38.384765625" />
+            <Text layoutX="436.0" layoutY="346.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Member :" />
+            <Text layoutX="439.0" layoutY="380.0" scaleX="1.074930013699446" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to team :" />
+            <Text layoutX="407.0" layoutY="480.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright Akshay,Bhavana© 2015" />
+            <ComboBox fx:id="console_sortingDirection" layoutX="465.0" layoutY="72.0" prefHeight="21.0" prefWidth="105.744140625">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Small to Large" />
+                  <String fx:value="Large to Small" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox fx:id="console_firstSortingFactor" layoutX="469.0" layoutY="115.0" prefHeight="21.0" prefWidth="106.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="None" />
+                  <String fx:value="Creation Date" />
+                  <String fx:value="Due Date" />
+                  <String fx:value="Assigned Member" />
+                  <String fx:value="Assigned Team" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox fx:id="console_secondSortingFactor" layoutX="465.0" layoutY="167.0" prefHeight="21.0" prefWidth="105.744140625">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="None" />
+                  <String fx:value="Creation Date" />
+                  <String fx:value="Due Date" />
+                  <String fx:value="Assigned Member" />
+                  <String fx:value="Assigned Team" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox fx:id="console_inclusionFactor" layoutX="462.0" layoutY="215.0" prefHeight="21.0" prefWidth="118.482421875">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Open Action Items" />
+                  <String fx:value="Closed Action Items" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ListView id="console_actionItemsList" fx:id="console_actionItemList" layoutX="42.0" layoutY="68.0" prefHeight="142.0" prefWidth="346.0" />
+            <Label layoutX="538.0" layoutY="266.0" text="" />
+            <Label layoutX="538.0" layoutY="265.0" text="date" />
+            <Label layoutX="531.0" layoutY="281.0" text="dueDate" />
+            <Label layoutX="536.0" layoutY="314.0" text="status" />
+            <Label layoutX="481.0" layoutY="349.0" text="member details" />
+            <Label layoutX="495.0" layoutY="391.0" text="Label" />
+          </children>
+        </AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Action Items">
+      <content>
+        <AnchorPane prefHeight="485.0" prefWidth="628.0">
+          <children>
+            <ListView layoutX="-15.0" layoutY="12.0" prefHeight="29.0" prefWidth="616.0" />
+            <Text layoutX="266.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Action Items" />
+            <Text layoutX="22.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Action Items:" />
+            <ComboBox id="actionItems" fx:id="action_actionItems" layoutX="6.0" layoutY="69.0" prefHeight="25.0" prefWidth="587.0" />
+            <Text layoutX="12.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inclusion Factor :" />
+            <Text layoutX="150.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sorting Direction :" />
+            <Text layoutX="304.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Sorting Factor :" wrappingWidth="105.744140625" />
+            <Text layoutX="453.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Second Sorting Factor :" />
+            <Text layoutX="12.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Action Item : " wrappingWidth="118.482421875" />
+            <Text layoutX="14.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" />
+            <TextField id="actionItemName" fx:id="action_Name" layoutX="56.0" layoutY="208.0" prefHeight="25.0" prefWidth="346.0" />
+            <Text layoutX="15.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :" />
+            <TextArea id="actionItemDescription" fx:id="action_Description" layoutX="14.0" layoutY="261.0" prefHeight="76.0" prefWidth="396.0" />
+            <Text layoutX="17.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resolution :" />
+            <TextArea id="actionItemResolution" fx:id="action_Resolution" layoutX="14.0" layoutY="365.0" prefHeight="70.0" prefWidth="396.0" />
+            <Text layoutX="413.0" layoutY="477.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright Akshay,Bhavana © 2015" />
+            <Text layoutX="440.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dates" />
+            <Text layoutX="450.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creation :" />
+            <Text layoutX="430.0" layoutY="402.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to team :" />
+            <Text layoutX="425.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Member :" />
+            <Text layoutX="450.0" layoutY="328.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status :" wrappingWidth="38.384765625" />
+            <Text layoutX="424.0" layoutY="312.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Action Item" />
+            <Text layoutX="445.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Due   :" />
+            <TextField id="actionItemDueDate" fx:id="action_dueDate" layoutX="493.0" layoutY="243.0" prefHeight="25.0" prefWidth="97.0" />
+            <Text layoutX="448.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use dd-mm-yyyy format" />
+            <Button layoutY="439.0" mnemonicParsing="false" text="Update this Action Item" />
+            <Button layoutX="142.0" layoutY="439.0" mnemonicParsing="false" text="Clear This Form" />
+            <Button layoutX="240.0" layoutY="439.0" mnemonicParsing="false" onAction="#saveForm" prefHeight="25.0" prefWidth="177.0" text="Create a  New Action  Item" />
+            <Button layoutX="417.0" layoutY="439.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="183.0" text="Delete  the   Action   Item" />
+            <ComboBox id="inclusionFactor" fx:id="action_inclusionFactor" layoutX="14.0" layoutY="144.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="All Action Items" />
+                  <String fx:value="Open Action Items" />
+                  <String fx:value="Closed Action Items" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox id="sortingDirection" fx:id="action_sortingDirection" layoutX="173.0" layoutY="144.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Large to Small" />
+                  <String fx:value="Small to Large" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox id="firstSortingFactor" fx:id="action_firstSortingFactor" layoutX="311.0" layoutY="144.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="None" />
+                  <String fx:value="Creation Date" />
+                  <String fx:value="Due Date" />
+                  <String fx:value="Assigned Member" />
+                  <String fx:value="Assigned Team" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox id="secondSortingFactor" fx:id="action_secondSortingFactor" layoutX="470.0" layoutY="145.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="None" />
+                  <String fx:value="Creation Date" />
+                  <String fx:value="Due Date" />
+                  <String fx:value="Assigned Member" />
+                  <String fx:value="Assigned Team" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox layoutX="505.0" layoutY="311.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Open" />
+                  <String fx:value="Closed" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox layoutX="469.0" layoutY="366.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox layoutX="471.0" layoutY="414.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+          </children>
+        </AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Members">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <children>
+            <Button layoutX="234.0" layoutY="77.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="142.0" text="Add to List -&gt;" />
+            <Button layoutX="232.0" layoutY="135.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
+            <Button layoutX="232.0" layoutY="329.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="155.0" text="Add Affliation -&gt;" />
+            <Button layoutX="225.0" layoutY="397.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Affliation" />
+            <TextArea layoutX="415.0" layoutY="52.0" prefHeight="158.0" prefWidth="172.0" />
+            <ScrollBar layoutX="570.0" layoutY="52.0" orientation="VERTICAL" prefHeight="158.0" prefWidth="14.0" />
+            <TextArea layoutX="441.0" layoutY="337.0" prefHeight="136.0" prefWidth="143.0" />
+            <TextArea layoutX="14.0" layoutY="337.0" prefHeight="136.0" prefWidth="143.0" />
+            <TextField layoutX="11.0" layoutY="52.0" />
+            <ListView layoutX="-1.0" layoutY="-3.0" prefHeight="26.0" prefWidth="598.0" />
+            <Text layoutX="248.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Members" />
+            <Text layoutX="20.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available teams  for" />
+            <Text layoutX="232.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click  on  a  individual's name" />
+            <Text layoutX="232.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to see  team affliations. " />
+            <Text layoutX="11.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of someone  new (First,Middle)" />
+            <Text layoutX="450.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current teams  for" />
+            <Text layoutX="415.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Text layoutX="1.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To add the name to the list :" />
+            <Text layoutX="7.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the box above" wrappingWidth="131.732421875" />
+            <Text layoutX="7.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Type the name" />
+            <Text layoutX="5.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click the &quot;add to list&quot; Button" wrappingWidth="160.73046875" />
+            <Text layoutX="2.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove the name from the List :" />
+            <Text layoutX="5.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the name to remove" />
+            <Text layoutX="5.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Click  on the &quot;Remove from List&quot;  button." />
+            <Text layoutX="1.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To add a team  affliation for a individual: " />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Text layoutX="7.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the name of the individual above right." />
+            <Text layoutX="4.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 2.Click on the team name in the list below." />
+            <Text layoutX="3.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 3.Click on &quot;Add affliation&quot; Button. " />
+            <Text layoutX="370.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove affliation for a individual :  " />
+            <Text layoutX="368.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the individual above." />
+            <Text layoutX="368.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Click on the team name in the list below" />
+            <Text layoutX="367.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
+          </children>
+        </AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Teams">
+      <content>
+        <AnchorPane>
+          <children>
+            <Text layoutX="424.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teams known by Della" />
+            <Text layoutX="7.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of  new  Team" />
+            <Text layoutX="230.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click  on  a  team's name" />
+            <Text layoutX="202.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <ListView layoutX="6.0" layoutY="7.0" prefHeight="26.0" prefWidth="598.0" />
+            <TextArea layoutX="425.0" layoutY="69.0" prefHeight="136.0" prefWidth="143.0" />
+            <TextArea layoutX="424.0" layoutY="353.0" prefHeight="126.0" prefWidth="172.0" />
+            <Button layoutX="222.0" layoutY="431.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Affliation" />
+            <Button layoutX="225.0" layoutY="369.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="155.0" text="Add Affliation -&gt;" />
+            <Button layoutX="230.0" layoutY="117.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
+            <Button layoutX="232.0" layoutY="49.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="142.0" text="Add to List -&gt;" />
+            <TextArea layoutX="7.0" layoutY="353.0" prefHeight="124.0" prefWidth="150.0" />
+            <TextField layoutX="6.0" layoutY="50.0" prefHeight="25.0" prefWidth="200.0" />
+            <Text layoutX="268.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teams" />
+            <Text layoutX="421.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Members  for  team :" />
+            <Text layoutX="9.0" layoutY="326.0" scaleX="0.9935824469777775" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available  Members  for team  :" />
+            <Text layoutX="232.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to see  member's association." />
+            <Text layoutX="2.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To add the name to the list :" />
+            <Text layoutX="5.0" layoutY="122.0" scaleX="0.9544531261583169" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the box above" wrappingWidth="131.732421875" />
+            <Text layoutX="8.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Type the name" />
+            <Text layoutX="6.0" layoutY="163.0" scaleX="0.9332393613143121" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click the &quot;add to list&quot; Button" wrappingWidth="160.73046875" />
+            <Text layoutX="2.0" layoutY="193.0" scaleX="0.949790002210503" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove the name from the List :" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+            <Text layoutX="5.0" layoutY="209.0" scaleX="0.95106745442024" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the name to remove" />
+            <Text layoutX="5.0" layoutY="226.0" scaleX="0.9835368395368218" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Click  on the &quot;Remove from List&quot;  button." />
+            <Text layoutX="10.0" layoutY="248.0" scaleX="0.9673286682901565" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To add a team  affliation for a team : " />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the name of the individual above right.i" />
+            <Text layoutX="8.0" layoutY="265.0" scaleX="0.9771790781909414" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the name of the team above right." />
+            <Text layoutX="8.0" layoutY="282.0" scaleX="0.9765767025590827" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 2.Click on the individual name in the list below." />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" 3.Click on &quot;Add affliation&quot; Button. " />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" 3.Click on &quot;Add affliation&quot; Button. " />
+            <Text layoutX="9.0" layoutY="299.0" scaleX="0.9621969546321978" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 3.Click on &quot;Add affliation&quot; Button. " />
+            <Text layoutX="372.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove affliation for a team :  " />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the individual above." />
+            <Text layoutX="372.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the team above." />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2.Click on the team name in the list below" />
+            <Text layoutX="372.0" layoutY="282.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Click on the individual name in the list below" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
+            <Text layoutX="372.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
+          </children>
+        </AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <children>
+            <Button layoutX="256.0" layoutY="52.0" minHeight="18.0" mnemonicParsing="false" prefHeight="18.0" text="Quit" />
+          </children>
+        </AnchorPane>
+      </content>
+      <graphic>
+        <Button mnemonicParsing="false" text="Quit" />
+      </graphic>
+    </Tab>
+  </tabs>
+</TabPane>
