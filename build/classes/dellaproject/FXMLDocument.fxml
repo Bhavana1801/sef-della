@@ -13,9 +13,9 @@
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="474.0" prefWidth="598.0">
           <children>
             <ListView layoutX="-5.0" layoutY="14.0" prefHeight="25.0" prefWidth="611.0" />
-            <TextField layoutX="52.0" layoutY="231.0" prefHeight="25.0" prefWidth="346.0" />
-            <TextArea editable="false" layoutX="13.0" layoutY="282.0" prefHeight="76.0" prefWidth="396.0" />
-            <TextArea editable="false" layoutX="13.0" layoutY="391.0" prefHeight="70.0" prefWidth="396.0" />
+            <TextField fx:id="console_name" layoutX="52.0" layoutY="231.0" prefHeight="25.0" prefWidth="346.0" />
+            <TextArea fx:id="console_description" editable="false" layoutX="13.0" layoutY="282.0" prefHeight="76.0" prefWidth="396.0" />
+            <TextArea fx:id="console_resolution" editable="false" layoutX="13.0" layoutY="391.0" prefHeight="70.0" prefWidth="396.0" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Action Items :" />
             <Text layoutX="16.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Action Items :" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" />
@@ -74,7 +74,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <ListView id="console_actionItemsList" fx:id="console_actionItemList" layoutX="42.0" layoutY="68.0" prefHeight="142.0" prefWidth="346.0" />
+            <ListView id="console_actionItemsList" fx:id="console_actionItemList" layoutX="42.0" layoutY="68.0" onMouseClicked="#consoleSelectItem" prefHeight="142.0" prefWidth="346.0" />
             <Label layoutX="538.0" layoutY="266.0" text="" />
             <Label layoutX="538.0" layoutY="265.0" text="date" />
             <Label layoutX="531.0" layoutY="281.0" text="dueDate" />
@@ -115,7 +115,7 @@
             <TextField id="actionItemDueDate" fx:id="action_dueDate" layoutX="493.0" layoutY="243.0" prefHeight="25.0" prefWidth="97.0" />
             <Text layoutX="448.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use dd-mm-yyyy format" />
             <Button layoutY="439.0" mnemonicParsing="false" text="Update this Action Item" />
-            <Button layoutX="142.0" layoutY="439.0" mnemonicParsing="false" text="Clear This Form" />
+            <Button layoutX="142.0" layoutY="439.0" mnemonicParsing="false" onAction="#clearForm" text="Clear This Form" />
             <Button layoutX="240.0" layoutY="439.0" mnemonicParsing="false" onAction="#saveForm" prefHeight="25.0" prefWidth="177.0" text="Create a  New Action  Item" />
             <Button layoutX="417.0" layoutY="439.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="183.0" text="Delete  the   Action   Item" />
             <ComboBox id="inclusionFactor" fx:id="action_inclusionFactor" layoutX="14.0" layoutY="144.0">
