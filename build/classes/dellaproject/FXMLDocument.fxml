@@ -85,7 +85,7 @@
         </AnchorPane>
       </content>
     </Tab>
-    <Tab text="Action Items">
+    <Tab onSelectionChanged="#displayActionItemScreen" text="Action Items">
       <content>
         <AnchorPane prefHeight="485.0" prefWidth="628.0">
           <children>
@@ -114,7 +114,7 @@
             <Text layoutX="445.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Due   :" />
             <TextField id="actionItemDueDate" fx:id="action_dueDate" layoutX="493.0" layoutY="243.0" prefHeight="25.0" prefWidth="97.0" />
             <Text layoutX="448.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use dd-mm-yyyy format" />
-            <Button layoutY="439.0" mnemonicParsing="false" text="Update this Action Item" />
+            <Button fx:id="action_Update" layoutY="439.0" mnemonicParsing="false" onMouseClicked="#updateActionItem" text="Update this Action Item" />
             <Button layoutX="142.0" layoutY="439.0" mnemonicParsing="false" onAction="#clearForm" text="Clear This Form" />
             <Button layoutX="240.0" layoutY="439.0" mnemonicParsing="false" onAction="#saveForm" prefHeight="25.0" prefWidth="177.0" text="Create a  New Action  Item" />
             <Button layoutX="417.0" layoutY="439.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="183.0" text="Delete  the   Action   Item" />
@@ -191,15 +191,11 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
           <children>
-            <Button layoutX="234.0" layoutY="77.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="142.0" text="Add to List -&gt;" />
-            <Button layoutX="232.0" layoutY="135.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
-            <Button layoutX="232.0" layoutY="329.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="155.0" text="Add Affliation -&gt;" />
-            <Button layoutX="225.0" layoutY="397.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Affliation" />
-            <TextArea layoutX="415.0" layoutY="52.0" prefHeight="158.0" prefWidth="172.0" />
-            <ScrollBar layoutX="570.0" layoutY="52.0" orientation="VERTICAL" prefHeight="158.0" prefWidth="14.0" />
-            <TextArea layoutX="441.0" layoutY="337.0" prefHeight="136.0" prefWidth="143.0" />
-            <TextArea layoutX="14.0" layoutY="337.0" prefHeight="136.0" prefWidth="143.0" />
-            <TextField layoutX="11.0" layoutY="52.0" />
+            <Button fx:id="members_addToList" layoutX="234.0" layoutY="77.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="142.0" text="Add to List -&gt;" />
+            <Button id="members_removeAffliation" fx:id="members_removeFromList" layoutX="232.0" layoutY="135.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
+            <Button fx:id="members_addAffliation" layoutX="232.0" layoutY="329.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="155.0" text="Add Affliation -&gt;" />
+            <Button fx:id="members_removeAffliation" layoutX="225.0" layoutY="397.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Affliation" />
+            <TextField fx:id="members_name" layoutX="11.0" layoutY="52.0" onMouseClicked="#disableRemoveFromList" />
             <ListView layoutX="-1.0" layoutY="-3.0" prefHeight="26.0" prefWidth="598.0" />
             <Text layoutX="248.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Members" />
             <Text layoutX="20.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available teams  for" />
@@ -207,7 +203,7 @@
             <Text layoutX="232.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to see  team affliations. " />
             <Text layoutX="11.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of someone  new (First,Middle)" />
             <Text layoutX="450.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current teams  for" />
-            <Text layoutX="415.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Text layoutX="415.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="individuals known by della" />
             <Text layoutX="1.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To add the name to the list :" />
             <Text layoutX="7.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the box above" wrappingWidth="131.732421875" />
             <Text layoutX="7.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Type the name" />
@@ -224,6 +220,9 @@
             <Text layoutX="368.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the individual above." />
             <Text layoutX="368.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Click on the team name in the list below" />
             <Text layoutX="367.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
+            <ListView fx:id="members_avail" layoutX="17.0" layoutY="323.0" onMouseClicked="#disableRemoveAffliation" prefHeight="148.0" prefWidth="200.0" />
+            <ListView fx:id="members_indiv" layoutX="398.0" layoutY="43.0" onMouseClicked="#disableAddToList" prefHeight="183.99993896484375" prefWidth="200.0" />
+            <ListView fx:id="members_current" layoutX="415.0" layoutY="323.0" onMouseClicked="#disableAddAffliation" prefHeight="139.98828125" prefWidth="200.0" />
           </children>
         </AnchorPane>
       </content>
@@ -237,14 +236,11 @@
             <Text layoutX="230.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click  on  a  team's name" />
             <Text layoutX="202.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" />
             <ListView layoutX="6.0" layoutY="7.0" prefHeight="26.0" prefWidth="598.0" />
-            <TextArea layoutX="425.0" layoutY="69.0" prefHeight="136.0" prefWidth="143.0" />
-            <TextArea layoutX="424.0" layoutY="353.0" prefHeight="126.0" prefWidth="172.0" />
-            <Button layoutX="222.0" layoutY="431.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Affliation" />
-            <Button layoutX="225.0" layoutY="369.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="155.0" text="Add Affliation -&gt;" />
-            <Button layoutX="230.0" layoutY="117.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
-            <Button layoutX="232.0" layoutY="49.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="142.0" text="Add to List -&gt;" />
-            <TextArea layoutX="7.0" layoutY="353.0" prefHeight="124.0" prefWidth="150.0" />
-            <TextField layoutX="6.0" layoutY="50.0" prefHeight="25.0" prefWidth="200.0" />
+            <Button fx:id="teams_removeAssociation" layoutX="222.0" layoutY="429.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Association" />
+            <Button fx:id="teams_addAssociation" layoutX="225.0" layoutY="369.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="155.0" text="Add Association -&gt;" />
+            <Button fx:id="teams_removeFromList" layoutX="230.0" layoutY="117.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
+            <Button fx:id="teams_addToList" layoutX="232.0" layoutY="49.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="142.0" text="Add to List -&gt;" />
+            <TextField fx:id="teams_name" layoutX="6.0" layoutY="50.0" onMouseClicked="#disableRemoveFromList" prefHeight="25.0" prefWidth="200.0" />
             <Text layoutX="268.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teams" />
             <Text layoutX="421.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Members  for  team :" />
             <Text layoutX="9.0" layoutY="326.0" scaleX="0.9935824469777775" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available  Members  for team  :" />
@@ -260,7 +256,7 @@
             <Text layoutX="10.0" layoutY="248.0" scaleX="0.9673286682901565" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To add a team  affliation for a team : " />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the name of the individual above right.i" />
             <Text layoutX="8.0" layoutY="265.0" scaleX="0.9771790781909414" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the name of the team above right." />
-            <Text layoutX="8.0" layoutY="282.0" scaleX="0.9765767025590827" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 2.Click on the individual name in the list below." />
+            <Text layoutX="8.0" layoutY="283.0" scaleX="0.9765767025590827" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 2.Click on the individual name in the list below." />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" 3.Click on &quot;Add affliation&quot; Button. " />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" 3.Click on &quot;Add affliation&quot; Button. " />
             <Text layoutX="9.0" layoutY="299.0" scaleX="0.9621969546321978" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 3.Click on &quot;Add affliation&quot; Button. " />
@@ -273,17 +269,16 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
             <Text layoutX="372.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
+            <ListView fx:id="teams_avail" layoutX="10.0" layoutY="335.0" prefHeight="136.0" prefWidth="200.0" />
+            <ListView fx:id="teams_known" layoutX="412.0" layoutY="63.0" prefHeight="173.0" prefWidth="200.0" />
+            <ListView id="teams_removeAssociation" fx:id="teams_current" layoutX="404.0" layoutY="337.0" prefHeight="136.0" prefWidth="200.0" />
           </children>
         </AnchorPane>
       </content>
     </Tab>
     <Tab text="">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-          <children>
-            <Button layoutX="256.0" layoutY="52.0" minHeight="18.0" mnemonicParsing="false" prefHeight="18.0" text="Quit" />
-          </children>
-        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
       </content>
       <graphic>
         <Button mnemonicParsing="false" text="Quit" />
