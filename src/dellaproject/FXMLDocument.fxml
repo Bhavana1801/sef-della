@@ -4,6 +4,7 @@
 <?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.9999000000025" prefWidth="625.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="dellaproject.FXMLDocumentController">
@@ -81,6 +82,7 @@
             <Label fx:id="console_Status" layoutX="536.0" layoutY="314.0" text="status" />
             <Label fx:id="console_memberDetails" layoutX="481.0" layoutY="349.0" text="member details" />
             <Label fx:id="console_teamDetails" layoutX="495.0" layoutY="391.0" text="Label" />
+            <Circle fx:id="console_circle" fill="#41cc00" layoutX="571.0" layoutY="27.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
           </children>
         </AnchorPane>
       </content>
@@ -192,11 +194,11 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
           <children>
-            <Button fx:id="members_addToList" layoutX="234.0" layoutY="77.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="142.0" text="Add to List -&gt;" />
-            <Button id="members_removeAffliation" fx:id="members_removeFromList" layoutX="232.0" layoutY="135.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
-            <Button fx:id="members_addAffliation" layoutX="232.0" layoutY="329.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="155.0" text="Add Affliation -&gt;" />
-            <Button fx:id="members_removeAffliation" layoutX="225.0" layoutY="397.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Affliation" />
-            <TextField fx:id="members_name" layoutX="11.0" layoutY="52.0" onMouseClicked="#disableRemoveFromList" />
+            <Button fx:id="members_addToList" layoutX="234.0" layoutY="77.0" mnemonicParsing="false" onAction="#addMember" prefHeight="40.0" prefWidth="142.0" text="Add to List -&gt;" />
+            <Button id="members_removeAffliation" fx:id="members_removeFromList" layoutX="232.0" layoutY="135.0" mnemonicParsing="false" onAction="#removeMember" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
+            <Button fx:id="members_addAffliation" layoutX="232.0" layoutY="329.0" mnemonicParsing="false" onAction="#addAffiliation" prefHeight="40.0" prefWidth="155.0" text="Add Affliation -&gt;" />
+            <Button fx:id="members_removeAffliation" layoutX="225.0" layoutY="397.0" mnemonicParsing="false" onAction="#removeAffiliation" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Affliation" />
+            <TextField fx:id="members_name" layoutX="11.0" layoutY="52.0" onAction="#disableAddAffliation" />
             <ListView layoutX="-1.0" layoutY="-3.0" prefHeight="26.0" prefWidth="598.0" />
             <Text layoutX="248.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Members" />
             <Text layoutX="20.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available teams  for" />
@@ -237,10 +239,10 @@
             <Text layoutX="230.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click  on  a  team's name" />
             <Text layoutX="202.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" />
             <ListView layoutX="6.0" layoutY="7.0" prefHeight="26.0" prefWidth="598.0" />
-            <Button fx:id="teams_removeAssociation" layoutX="222.0" layoutY="429.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Association" />
-            <Button fx:id="teams_addAssociation" layoutX="225.0" layoutY="369.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="155.0" text="Add Association -&gt;" />
-            <Button fx:id="teams_removeFromList" layoutX="230.0" layoutY="117.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
-            <Button fx:id="teams_addToList" layoutX="232.0" layoutY="49.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="142.0" text="Add to List -&gt;" />
+            <Button fx:id="teams_removeAssociation" layoutX="222.0" layoutY="429.0" mnemonicParsing="false" onAction="#removeAssociation" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Association" />
+            <Button fx:id="teams_addAssociation" layoutX="225.0" layoutY="369.0" mnemonicParsing="false" onAction="#addAssociation" prefHeight="40.0" prefWidth="155.0" text="Add Association -&gt;" />
+            <Button fx:id="teams_removeFromList" layoutX="230.0" layoutY="117.0" mnemonicParsing="false" onAction="#removeTeam" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
+            <Button fx:id="teams_addToList" layoutX="232.0" layoutY="49.0" mnemonicParsing="false" onAction="#addTeam" prefHeight="40.0" prefWidth="142.0" text="Add to List -&gt;" />
             <TextField fx:id="teams_name" layoutX="6.0" layoutY="50.0" onMouseClicked="#disableRemoveFromList" prefHeight="25.0" prefWidth="200.0" />
             <Text layoutX="268.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teams" />
             <Text layoutX="421.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Members  for  team :" />

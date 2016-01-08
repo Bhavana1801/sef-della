@@ -34,6 +34,15 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 /**
  *
@@ -63,6 +72,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML private TextField console_name;
     @FXML private TextArea console_description;
     @FXML private TextArea console_resolution;
+    @FXML private Circle console_circle;
+    
     
     //action items screen
     @FXML private ComboBox<String> action_actionItems;
@@ -155,6 +166,23 @@ public class FXMLDocumentController implements Initializable {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
         initializeAll();
+        new Timer().schedule(
+         new TimerTask() {
+             @Override
+              public void run() {
+              String Status = new InternetConnection().getInternetStatus();
+              if(Status.equals("Online")) {
+                  console_circle.setFill(Color.BLUE);
+                    System.out.println("online");
+                     boolean isOnline = true;
+              }
+              else {
+                    console_circle.setFill(Color.RED);
+                       System.out.println("offline");
+                     boolean isOnline = false;
+              }
+      }
+         }, 0, 10000);
     }
     // it initializes all the comboBoxes to first values in it.
     public void initializeAll() {
@@ -175,14 +203,14 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("create a new action form");
        Connection con1 =  connect();
        Statement st = con1.createStatement();
-       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-       Date date = new Date();
-       action_creation.setText(dateFormat.format(date));
+//       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//       Date date = new Date();
+//       action_creation.setText(dateFormat.format(date));
        String name = action_Name.getText();
        String Description = action_Description.getText();
        String Resolution = action_Resolution.getText();
-       Date dueDate  = dateFormat.parse(action_dueDate.getText());
-       System.out.println("date: "+dateFormat.format(dueDate));
+//       Date dueDate  = dateFormat.parse(action_dueDate.getText());
+//       System.out.println("date: "+dateFormat.format(dueDate));
        String sql = "SELECT name FROM sample";
         ResultSet rs = con1.createStatement().executeQuery(sql);
         ObservableList<String> itemList = FXCollections.observableArrayList();
@@ -213,7 +241,7 @@ public class FXMLDocumentController implements Initializable {
             return;
         }
         //inserting values into the database
-        sql = "INSERT INTO sample VALUES('"+name+"','"+Description+"','"+Resolution+"','"+dueDate+"')";
+        sql = "INSERT INTO sample VALUES('"+name+"','"+Description+"','"+Resolution+"')";
         st.executeUpdate(sql);
         st.close();
     }
@@ -299,11 +327,13 @@ public class FXMLDocumentController implements Initializable {
     }
     // removeFromList button is disabled when user clicks on left side box
     public void disableRemoveFromList() {
+        System.out.println("disable remove from list");
         members_removeFromList.setDisable(true);
         members_addToList.setDisable(false);
     }
     // addAffliation button is disabled when user clicks on right side box
     public void disableAddAffliation() {
+        System.out.println("disable add affliation");
         members_addAffliation.setDisable(true);
         members_removeAffliation.setDisable(false);
     }
@@ -358,6 +388,38 @@ public class FXMLDocumentController implements Initializable {
         
     }
     public void consoleInclusionFactor() {
+        
+    }
+    public void addMember() throws SQLException{
+        
+        Connection con1 =  connect();
+        Statement st = con1.createStatement();
+        String memberName = members_name.getText();
+        System.out.println(memberName);
+        st.executeUpdate("insert into members VALUES('"+memberName+"')");
+    }
+    public void removeMember() throws SQLException{
+       String name = members_indiv.getSelectionModel().getSelectedItem();
+       Connection con3 =connect();
+       Statement st2=con3.createStatement();  
+       st2.executeUpdate("delete from members where mname= '"+name+"' ");
+    }
+    public void addAffiliation() {
+        
+    }
+    public void removeAffiliation() {
+        
+    }
+    public void addTeam() {
+        
+    }
+    public void removeTeam(){
+        
+    }
+    public void addAssociation() {
+        
+    }
+    public void removeAssociation() {
         
     }
 }
