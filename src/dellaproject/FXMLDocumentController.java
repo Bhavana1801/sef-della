@@ -26,8 +26,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -37,13 +43,19 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private Label label;
+    //tab pane
+    @FXML private Tab console_tab;
+    @FXML private Tab action_tab;
+    @FXML private Tab members_tab;
+    @FXML private Tab teams_tab;
+    @FXML private Button quitButton;
     //console screen
     @FXML ListView<String> console_actionItemList;
     @FXML private ComboBox<String> console_inclusionFactor;
     @FXML private ComboBox<String> console_sortingDirection;
     @FXML private ComboBox<String> console_firstSortingFactor;
     @FXML private ComboBox<String> console_secondSortingFactor;
-    @FXML private Label console_Creation;
+    @FXML private Label console_CreationDate;
     @FXML private Label console_dueDate;
     @FXML private Label console_Status;
     @FXML private Label console_memberDetails;
@@ -51,9 +63,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML private TextField console_name;
     @FXML private TextArea console_description;
     @FXML private TextArea console_resolution;
+    
     //action items screen
     @FXML private ComboBox<String> action_actionItems;
-    @FXML private final ComboBox<String> action_inclusionFactor;
+    @FXML private ComboBox<String> action_inclusionFactor;
     @FXML private ComboBox<String> action_sortingDirection;
     @FXML private ComboBox<String> action_firstSortingFactor;
     @FXML private ComboBox<String> action_secondSortingFactor;
@@ -64,6 +77,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML private ComboBox<String> action_Team;
     @FXML private TextField action_dueDate;
     @FXML private Button action_Update;
+    @FXML private Label action_creation;
+    @FXML private ComboBox<String> action_Status;
 
     //members screen
     
@@ -99,16 +114,14 @@ public class FXMLDocumentController implements Initializable {
         this.action_Name = new TextField();
         this.action_Description = new TextArea();
         this.action_Resolution = new TextArea();
-        this.console_Creation = new Label();
+        this.console_CreationDate = new Label();
         this.console_dueDate = new Label();
         this.console_Status = new Label();
-//        this.console_Description = new TextField();
         this.console_memberDetails = new Label();
         this.console_teamDetails = new Label();
         this.action_Member = new ComboBox<>();
         this.action_Team = new ComboBox<>();
         this.action_dueDate = new TextField();
-//        this.console_actionItemList = new ListView<>();
     }
     
     public Connection connect() throws SQLException{
@@ -135,35 +148,46 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        try {
-            // TODO
-            connect();
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void initialize(URL url, ResourceBundle rb) {    
         try {
             consoleDisplay();
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        initializeAll();
+    }
+    // it initializes all the comboBoxes to first values in it.
+    public void initializeAll() {
+        console_inclusionFactor.getSelectionModel().selectFirst();
+        console_sortingDirection.getSelectionModel().selectFirst();
+        console_firstSortingFactor.getSelectionModel().selectFirst();
+        console_secondSortingFactor.getSelectionModel().selectFirst();
+        action_inclusionFactor.getSelectionModel().selectFirst();
+        action_sortingDirection.getSelectionModel().selectFirst();
+        action_firstSortingFactor.getSelectionModel().selectFirst();
+        action_secondSortingFactor.getSelectionModel().selectFirst();
+        action_Status.getSelectionModel().selectFirst();
+        action_Member.getSelectionModel().selectFirst();
+        action_Team.getSelectionModel().selectFirst();
     }
     //the form is saved-action item form
-    public void saveForm(ActionEvent event) throws SQLException {
+    public void saveForm(ActionEvent event) throws SQLException, ParseException {
         System.out.println("create a new action form");
        Connection con1 =  connect();
        Statement st = con1.createStatement();
+       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+       Date date = new Date();
+       action_creation.setText(dateFormat.format(date));
        String name = action_Name.getText();
        String Description = action_Description.getText();
        String Resolution = action_Resolution.getText();
+       Date dueDate  = dateFormat.parse(action_dueDate.getText());
+       System.out.println("date: "+dateFormat.format(dueDate));
        String sql = "SELECT name FROM sample";
         ResultSet rs = con1.createStatement().executeQuery(sql);
         ObservableList<String> itemList = FXCollections.observableArrayList();
         while(rs.next()){
             String str = rs.getString("name");
-//            System.out.println(name);
             itemList.add(str);
         }
         System.out.println(itemList);
@@ -188,11 +212,10 @@ public class FXMLDocumentController implements Initializable {
             alert.showAndWait();
             return;
         }
-        
-        sql = "INSERT INTO sample VALUES('"+name+"','"+Description+"','"+Resolution+"')";
+        //inserting values into the database
+        sql = "INSERT INTO sample VALUES('"+name+"','"+Description+"','"+Resolution+"','"+dueDate+"')";
         st.executeUpdate(sql);
         st.close();
-//        st.executeUpdate(sql);
     }
     //the form is cleared when we click clear form button
     public void clearForm(ActionEvent event) throws SQLException{
@@ -205,7 +228,7 @@ public class FXMLDocumentController implements Initializable {
     public void consoleDisplay() throws SQLException {
         System.out.println("console display");
         Connection con2 = connect();
-        
+        //retrieving all the action item names from database
         String str = "SELECT name FROM sample";
         ResultSet rs = con2.createStatement().executeQuery(str);
         ObservableList<String> itemList = FXCollections.observableArrayList();
@@ -214,6 +237,7 @@ public class FXMLDocumentController implements Initializable {
             System.out.println(name);
             itemList.add(name);
         }
+        //displays all the list of action item names to the console screen
         console_actionItemList.setItems(itemList); 
     }
     //details of a particular item selected is shown on console screen
@@ -249,6 +273,7 @@ public class FXMLDocumentController implements Initializable {
         ResultSet rs = con1.createStatement().executeQuery(sql);
         
     }
+    //select an item from console and if we click action item screen,details are displayed
     public void displayActionItemScreen() throws SQLException {
         System.out.println("action item screen is clicked");
         String item = console_actionItemList.getSelectionModel().getSelectedItem();
@@ -260,8 +285,6 @@ public class FXMLDocumentController implements Initializable {
             String name = rs.getString("name");
             String desc = rs.getString("description");
             String res = rs.getString("resolution");
-            
-//            System.out.println(res+"jdash");
             action_Name.setText(name);
             action_Description.setText(desc);
             action_Resolution.setText(res);
@@ -271,24 +294,70 @@ public class FXMLDocumentController implements Initializable {
     // addToList button is disabled when user clicks on right side box
     public void disableAddToList() {
         members_addToList.setDisable(true);
+        members_removeFromList.setDisable(false);
         teams_addToList.setDisable(true);
     }
     // removeFromList button is disabled when user clicks on left side box
     public void disableRemoveFromList() {
         members_removeFromList.setDisable(true);
+        members_addToList.setDisable(false);
     }
     // addAffliation button is disabled when user clicks on right side box
     public void disableAddAffliation() {
         members_addAffliation.setDisable(true);
+        members_removeAffliation.setDisable(false);
     }
     // removeAffliation button is disabled when user clicks on left side box
     public void disableRemoveAffliation() {
         members_removeAffliation.setDisable(true);
+        members_addAffliation.setDisable(false);
     }
     
     //application is closed
-    public void closeApplication(ActionEvent event) {
+    @FXML
+    private void closeButtonAction(){
+        // get a handle to the stage
+        System.out.println("close");
+        Stage stage = (Stage) quitButton.getScene().getWindow();
+        // do what you have to do
+        stage.close();
+    }
+
+    /**
+     * if we click on the sorting direction, the action items are sorted and displayed
+     * @throws SQLException
+     */
+    @FXML
+    public void consoleSortingDirection() throws SQLException {
+        System.out.println("console sorting direction");
+        Connection con = connect();
+        String cmd = console_sortingDirection.getSelectionModel().getSelectedItem();
+        System.out.println(cmd);
+        String sql = "SELECT name FROM sample";
+        ResultSet rs = con.createStatement().executeQuery(sql);
+        ObservableList<String> list = FXCollections.observableArrayList();
+        while(rs.next()){
+            String name = rs.getString("name"); 
+            list.add(name);
+        }
+        FXCollections.sort(list);
+        if(cmd.equals("Small to Large")) {
+            console_actionItemList.setItems(list);
+            return;
+        }
+        ObservableList<String> list2 = FXCollections.observableArrayList();
+        for (int i = list.size()-1;i>=0;i--) {
+            list2.add(list.get(i));
+        }
+        console_actionItemList.setItems(list2);
+    }
+    public void consoleFirstSorting() {
         
     }
-    
+    public void consoleSecondSorting() {
+        
+    }
+    public void consoleInclusionFactor() {
+        
+    }
 }

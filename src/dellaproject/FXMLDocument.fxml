@@ -8,7 +8,7 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.9999000000025" prefWidth="625.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="dellaproject.FXMLDocumentController">
   <tabs>
-    <Tab text="Console">
+    <Tab fx:id="console_tab" text="Console">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="474.0" prefWidth="598.0">
           <children>
@@ -36,7 +36,7 @@
             <Text layoutX="436.0" layoutY="346.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Member :" />
             <Text layoutX="439.0" layoutY="380.0" scaleX="1.074930013699446" scaleY="1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to team :" />
             <Text layoutX="407.0" layoutY="480.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright Akshay,Bhavana© 2015" />
-            <ComboBox fx:id="console_sortingDirection" layoutX="465.0" layoutY="72.0" prefHeight="21.0" prefWidth="105.744140625">
+            <ComboBox fx:id="console_sortingDirection" layoutX="465.0" layoutY="72.0" onAction="#consoleSortingDirection" prefHeight="21.0" prefWidth="105.744140625">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Small to Large" />
@@ -44,7 +44,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <ComboBox fx:id="console_firstSortingFactor" layoutX="469.0" layoutY="115.0" prefHeight="21.0" prefWidth="106.0">
+            <ComboBox fx:id="console_firstSortingFactor" layoutX="469.0" layoutY="115.0" onAction="#consoleFirstSorting" prefHeight="21.0" prefWidth="106.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="None" />
@@ -55,7 +55,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <ComboBox fx:id="console_secondSortingFactor" layoutX="465.0" layoutY="167.0" prefHeight="21.0" prefWidth="105.744140625">
+            <ComboBox fx:id="console_secondSortingFactor" layoutX="465.0" layoutY="167.0" onAction="#consoleSecondSorting" prefHeight="21.0" prefWidth="105.744140625">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="None" />
@@ -76,16 +76,16 @@
             </ComboBox>
             <ListView id="console_actionItemsList" fx:id="console_actionItemList" layoutX="42.0" layoutY="68.0" onMouseClicked="#consoleSelectItem" prefHeight="142.0" prefWidth="346.0" />
             <Label layoutX="538.0" layoutY="266.0" text="" />
-            <Label layoutX="538.0" layoutY="265.0" text="date" />
-            <Label layoutX="531.0" layoutY="281.0" text="dueDate" />
-            <Label layoutX="536.0" layoutY="314.0" text="status" />
-            <Label layoutX="481.0" layoutY="349.0" text="member details" />
-            <Label layoutX="495.0" layoutY="391.0" text="Label" />
+            <Label id="console_dueDate" fx:id="console_CreationDate" layoutX="538.0" layoutY="265.0" text="date" />
+            <Label fx:id="console_dueDate" layoutX="531.0" layoutY="281.0" text="dueDate" />
+            <Label fx:id="console_Status" layoutX="536.0" layoutY="314.0" text="status" />
+            <Label fx:id="console_memberDetails" layoutX="481.0" layoutY="349.0" text="member details" />
+            <Label fx:id="console_teamDetails" layoutX="495.0" layoutY="391.0" text="Label" />
           </children>
         </AnchorPane>
       </content>
     </Tab>
-    <Tab onSelectionChanged="#displayActionItemScreen" text="Action Items">
+    <Tab fx:id="action_tab" onSelectionChanged="#displayActionItemScreen" text="Action Items">
       <content>
         <AnchorPane prefHeight="485.0" prefWidth="628.0">
           <children>
@@ -157,7 +157,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <ComboBox layoutX="505.0" layoutY="311.0">
+            <ComboBox fx:id="action_Status" layoutX="505.0" layoutY="311.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Open" />
@@ -165,7 +165,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <ComboBox layoutX="469.0" layoutY="366.0">
+            <ComboBox fx:id="action_Member" layoutX="469.0" layoutY="366.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
@@ -174,7 +174,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <ComboBox layoutX="471.0" layoutY="414.0">
+            <ComboBox fx:id="action_Team" layoutX="471.0" layoutY="414.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
@@ -183,11 +183,12 @@
                 </FXCollections>
               </items>
             </ComboBox>
+            <Label fx:id="action_creation" layoutX="506.0" layoutY="217.0" prefWidth="105.744140625" text="Label" />
           </children>
         </AnchorPane>
       </content>
     </Tab>
-    <Tab text="Members">
+    <Tab fx:id="members_tab" text="Members">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
           <children>
@@ -227,7 +228,7 @@
         </AnchorPane>
       </content>
     </Tab>
-    <Tab text="Teams">
+    <Tab fx:id="teams_tab" text="Teams">
       <content>
         <AnchorPane>
           <children>
@@ -281,7 +282,7 @@
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
       </content>
       <graphic>
-        <Button mnemonicParsing="false" text="Quit" />
+        <Button fx:id="quitButton" mnemonicParsing="false" onAction="#closeButtonAction" text="Quit" />
       </graphic>
     </Tab>
   </tabs>
