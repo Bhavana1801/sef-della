@@ -20,7 +20,7 @@ public class DellaProject extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        
+        stage.setTitle("Della");
         Scene scene = new Scene(root);
         
         stage.setScene(scene);

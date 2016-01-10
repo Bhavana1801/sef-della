@@ -4,6 +4,7 @@
 <?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
@@ -82,7 +83,8 @@
             <Label fx:id="console_Status" layoutX="536.0" layoutY="314.0" text="status" />
             <Label fx:id="console_memberDetails" layoutX="481.0" layoutY="349.0" text="member details" />
             <Label fx:id="console_teamDetails" layoutX="495.0" layoutY="391.0" text="Label" />
-            <Circle fx:id="console_circle" fill="#41cc00" layoutX="571.0" layoutY="27.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="console_circle" fx:id="console_Circle" fill="#606060" layoutX="571.0" layoutY="27.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label fx:id="console_label" layoutX="345.0" layoutY="19.0" prefWidth="163.93359375" text="" />
           </children>
         </AnchorPane>
       </content>
@@ -186,11 +188,17 @@
               </items>
             </ComboBox>
             <Label fx:id="action_creation" layoutX="506.0" layoutY="217.0" prefWidth="105.744140625" text="Label" />
+            <Circle id="console_circle" fx:id="action_Circle" layoutX="564.0" layoutY="26.0" radius="12.0" stroke="BLACK" strokeType="INSIDE">
+              <fill>
+                <Color blue="0.376" green="0.376" red="0.376" fx:id="x1" />
+              </fill>
+            </Circle>
+            <Label fx:id="action_label" layoutX="357.0" layoutY="18.0" prefWidth="163.93359375" text="" />
           </children>
         </AnchorPane>
       </content>
     </Tab>
-    <Tab fx:id="members_tab" text="Members">
+    <Tab fx:id="members_tab" onSelectionChanged="#membersScreen" text="Members">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
           <children>
@@ -198,15 +206,15 @@
             <Button id="members_removeAffliation" fx:id="members_removeFromList" layoutX="232.0" layoutY="135.0" mnemonicParsing="false" onAction="#removeMember" prefHeight="41.0" prefWidth="147.0" text=" &lt;-Remove from List" />
             <Button fx:id="members_addAffliation" layoutX="232.0" layoutY="329.0" mnemonicParsing="false" onAction="#addAffiliation" prefHeight="40.0" prefWidth="155.0" text="Add Affliation -&gt;" />
             <Button fx:id="members_removeAffliation" layoutX="225.0" layoutY="397.0" mnemonicParsing="false" onAction="#removeAffiliation" prefHeight="42.0" prefWidth="167.0" text="&lt;-Remove Affliation" />
-            <TextField fx:id="members_name" layoutX="11.0" layoutY="52.0" onAction="#disableAddAffliation" />
-            <ListView layoutX="-1.0" layoutY="-3.0" prefHeight="26.0" prefWidth="598.0" />
+            <TextField fx:id="members_name" layoutX="13.0" layoutY="66.0" onMouseClicked="#disableRemoveFromList" />
+            <ListView layoutX="-1.0" layoutY="6.0" prefHeight="26.0" prefWidth="598.0" />
             <Text layoutX="248.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Members" />
             <Text layoutX="20.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available teams  for" />
             <Text layoutX="232.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click  on  a  individual's name" />
             <Text layoutX="232.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to see  team affliations. " />
-            <Text layoutX="11.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of someone  new (First,Middle)" />
+            <Text layoutX="11.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of someone  new (First,Middle)" />
             <Text layoutX="450.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current teams  for" />
-            <Text layoutX="415.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="individuals known by della" />
+            <Text layoutX="415.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="individuals known by della" />
             <Text layoutX="1.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To add the name to the list :" />
             <Text layoutX="7.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Click on the box above" wrappingWidth="131.732421875" />
             <Text layoutX="7.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Type the name" />
@@ -224,13 +232,15 @@
             <Text layoutX="368.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Click on the team name in the list below" />
             <Text layoutX="367.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
             <ListView fx:id="members_avail" layoutX="17.0" layoutY="323.0" onMouseClicked="#disableRemoveAffliation" prefHeight="148.0" prefWidth="200.0" />
-            <ListView fx:id="members_indiv" layoutX="398.0" layoutY="43.0" onMouseClicked="#disableAddToList" prefHeight="183.99993896484375" prefWidth="200.0" />
+            <ListView fx:id="members_indiv" layoutX="398.0" layoutY="47.0" onMouseClicked="#disableAddToList" onMousePressed="#showAvailableTeams" prefHeight="183.99993896484375" prefWidth="200.0" />
             <ListView fx:id="members_current" layoutX="415.0" layoutY="323.0" onMouseClicked="#disableAddAffliation" prefHeight="139.98828125" prefWidth="200.0" />
+            <Circle id="console_circle" fx:id="members_Circle" fill="$x1" layoutX="546.0" layoutY="19.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label fx:id="members_label" layoutX="333.0" layoutY="11.0" prefWidth="163.93359375" text="" />
           </children>
         </AnchorPane>
       </content>
     </Tab>
-    <Tab fx:id="teams_tab" text="Teams">
+    <Tab fx:id="teams_tab" onSelectionChanged="#teamsScreen" text="Teams">
       <content>
         <AnchorPane>
           <children>
@@ -272,9 +282,11 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
             <Text layoutX="372.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.Click  on &quot;Remove Affliation&quot;  Button." />
-            <ListView fx:id="teams_avail" layoutX="10.0" layoutY="335.0" prefHeight="136.0" prefWidth="200.0" />
-            <ListView fx:id="teams_known" layoutX="412.0" layoutY="63.0" prefHeight="173.0" prefWidth="200.0" />
-            <ListView id="teams_removeAssociation" fx:id="teams_current" layoutX="404.0" layoutY="337.0" prefHeight="136.0" prefWidth="200.0" />
+            <ListView fx:id="teams_avail" layoutX="10.0" layoutY="335.0" onMouseClicked="#disableAddAssociation" prefHeight="136.0" prefWidth="200.0" />
+            <ListView fx:id="teams_known" layoutX="412.0" layoutY="63.0" onMouseClicked="#disableAddToList" onMousePressed="#showAvailableMembers" prefHeight="173.0" prefWidth="200.0" />
+            <ListView id="teams_removeAssociation" fx:id="teams_current" layoutX="404.0" layoutY="337.0" onMouseClicked="#disableRemoveAssociation" prefHeight="136.0" prefWidth="200.0" />
+            <Circle id="console_circle" fx:id="teams_Circle" fill="$x1" layoutX="566.0" layoutY="20.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label fx:id="teams_label" layoutX="347.0" layoutY="9.0" prefWidth="163.93359375" text="" />
           </children>
         </AnchorPane>
       </content>

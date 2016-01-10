@@ -1,6 +1,6 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template file,getA choose Tools | Templates
  * and open the template in the editor.
  */
 package dellaproject;
@@ -14,14 +14,14 @@ import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.PasswordAuthentication;
-    import java.net.URL;
+import java.net.URL;
 import java.net.UnknownHostException;
 @SuppressWarnings("PublicInnerClass")
 public class InternetConnection{
     
     public String getInternetStatus(){
            try{
-                  final String authUser = "201585060";
+                  final String authUser = "201585107";
         final String authPassword = "msit123";
         Authenticator.setDefault(
                    new Authenticator() {
