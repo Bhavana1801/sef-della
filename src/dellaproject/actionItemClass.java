@@ -6,10 +6,13 @@
 package dellaproject;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,14 +29,50 @@ public class actionItemClass {
     public void saveForm(FXMLDocumentController fx) throws SQLException, ParseException {
               
         System.out.println("create a new action form");
-       Connection con1 =  fx.connect();
-       Statement st = con1.createStatement();
-       String name = fx.getAction_Name().getText();
-       System.out.println(name);
-       String Description = fx.getAction_Description().getText();
-       System.out.println(Description);
-       String Resolution = fx.getAction_Resolution().getText();
-       String sql = "SELECT name FROM sample";
+        boolean forDate = false;
+        Connection con1 =  fx.connect();
+        Statement st = con1.createStatement();
+        String name = fx.getAction_Name().getText();
+        String Description = fx.getAction_Description().getText();
+        String Resolution = fx.getAction_Resolution().getText();
+        String date2 = fx.getAction_dueDate().getText();
+        Date creationDate = new Date();
+        Date dueDate = new Date();
+        //stores the system date as the creation date into the database(date1).
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        Date dateobj = new Date();
+        String date1 = df.format(dateobj);
+        try {
+            creationDate = df.parse(date1);
+            dueDate = df.parse(date2);
+        }
+        catch(ParseException e) {
+            
+        }
+        System.out.println("date"+creationDate+"...."+dueDate);
+        //checking duedate entered is valid.
+        try {
+            System.out.println("in try");
+            df.parse(date2);
+            if(date2.length()==10) {
+                if(dueDate.compareTo(creationDate)>=0) {
+                           forDate = true;
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Dialog");
+                    alert.setHeaderText("duedate cannot be less than current date");
+                    alert.setContentText("please enter correct date in yyyy/mm/dd format");
+
+                    alert.showAndWait();
+                    return;
+                }
+            } 
+        }
+        catch(ParseException e) {
+            System.out.println("in catch");
+        }
+        String sql = "SELECT name FROM sample";
         ResultSet rs = con1.createStatement().executeQuery(sql);
         ObservableList<String> itemList = FXCollections.observableArrayList();
         while(rs.next()){
@@ -41,7 +80,7 @@ public class actionItemClass {
             itemList.add(str);
         }
         //if the action item name already exists alert message is shown.
-        if(itemList.contains(name)) {
+        if(itemList.contains(name)&&forDate==true) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setHeaderText("Name already exists");
@@ -51,7 +90,7 @@ public class actionItemClass {
             return;
         }
         // if the action item name is empty, warning is shown
-        else if(name.equals("")) {
+        else if(name.equals("") && forDate ==true) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setHeaderText("Name cannot be empty");
@@ -60,10 +99,27 @@ public class actionItemClass {
             alert.showAndWait();
             return;
         }
+        //if duedate is not in correct format.
+        else if(forDate==false){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("wrong date format");
+            alert.setContentText("please enter the date in correct format");
+            alert.setContentText("yyyy/mm/dd");
+
+            alert.showAndWait();
+            return;
+        }
         //inserting values into the database
-        sql = "INSERT INTO sample VALUES('"+name+"','"+Description+"','"+Resolution+"')";
+        sql = "INSERT INTO sample VALUES('"+name+"','"+Description+"','"+Resolution+"','"+date1+"','"+date2+"')";
         st.executeUpdate(sql);
         st.close();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Hurray!!!");
+            alert.setContentText("your action item is created succesfully!!!");
+            alert.showAndWait();
+        fx.clearForm();
     }
     public void clearForm(FXMLDocumentController fx) throws SQLException{
         System.out.println("clear this form");
@@ -81,6 +137,11 @@ public class actionItemClass {
        String sql = "UPDATE sample SET description='"+Description+"',resolution='"+Resolution+"'WHERE name='"+name+"'";
        System.out.println(name+Description+Resolution);
         ResultSet rs = con1.createStatement().executeQuery(sql);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Hurray!!!");
+            alert.setContentText("your action item is updated succesfully!!!");
+            alert.showAndWait();
         
     }
     public void displayActionItemScreen(FXMLDocumentController fx) throws SQLException {
@@ -88,17 +149,37 @@ public class actionItemClass {
         String item = fx.console_actionItemList.getSelectionModel().getSelectedItem();
         System.out.println(item);
         Connection con3 = fx.connect();
+        //displays current date.
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        Date dateobj = new Date();
+        String date1 = df.format(dateobj);
+        fx.getAction_creation().setText(date1);
         String str = "SELECT * FROM sample where name='"+item+"'";
         ResultSet rs = con3.createStatement().executeQuery(str);
         while(rs.next()){
             String name = rs.getString("name");
             String desc = rs.getString("description");
             String res = rs.getString("resolution");
+            String date = rs.getString("creation");
             fx.getAction_Name().setText(name);
             fx.getAction_Description().setText(desc);
             fx.getAction_Resolution().setText(res);
+            fx.getAction_creation().setText(date);
             
         }
+    }
+    public void deleteActionItem(FXMLDocumentController fx) throws SQLException {
+        Connection con3 = fx.connect();
+        String name = fx.getAction_Name().getText();
+        String str = "DELETE FROM sample where name='"+name+"'";
+        ResultSet rs = con3.createStatement().executeQuery(str);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Hurray!!!");
+            alert.setContentText("your action item '"+name+"' is deleted succesfully!!!");
+            alert.showAndWait();
+        fx.clearForm();
+        fx.clearForm();
     }
     
 }

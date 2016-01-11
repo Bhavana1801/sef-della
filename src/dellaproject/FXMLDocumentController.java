@@ -606,12 +606,10 @@ public class FXMLDocumentController implements Initializable {
        
     
     public Connection connect() throws SQLException{
-        System.out.println("hello");
-            
+                   
         Connection con=null;
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            System.out.println("came");
             con = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","bhavs","bhavs");
             System.out.println("succesfull connection");
         }
@@ -666,17 +664,17 @@ public class FXMLDocumentController implements Initializable {
     }
     // it initializes all the comboBoxes to first values in it.
     public void initializeAll() {
-        console_inclusionFactor.getSelectionModel().selectFirst();
-        console_sortingDirection.getSelectionModel().selectFirst();
-        console_firstSortingFactor.getSelectionModel().selectFirst();
-        console_secondSortingFactor.getSelectionModel().selectFirst();
-        action_inclusionFactor.getSelectionModel().selectFirst();
-        action_sortingDirection.getSelectionModel().selectFirst();
-        action_firstSortingFactor.getSelectionModel().selectFirst();
-        action_secondSortingFactor.getSelectionModel().selectFirst();
-        action_Status.getSelectionModel().selectFirst();
-        action_Member.getSelectionModel().selectFirst();
-        action_Team.getSelectionModel().selectFirst();
+        getConsole_inclusionFactor().getSelectionModel().selectFirst();
+        getConsole_sortingDirection().getSelectionModel().selectFirst();
+        getConsole_firstSortingFactor().getSelectionModel().selectFirst();
+        getConsole_secondSortingFactor().getSelectionModel().selectFirst();
+        getAction_inclusionFactor().getSelectionModel().selectFirst();
+        getAction_sortingDirection().getSelectionModel().selectFirst();
+        getAction_firstSortingFactor().getSelectionModel().selectFirst();
+        getAction_secondSortingFactor().getSelectionModel().selectFirst();
+        getAction_Status().getSelectionModel().selectFirst();
+        getAction_Member().getSelectionModel().selectFirst();
+        getAction_Team().getSelectionModel().selectFirst();
     }
     //the form is saved-action item form
     public void saveForm(ActionEvent event) throws SQLException, ParseException {
@@ -685,7 +683,7 @@ public class FXMLDocumentController implements Initializable {
     }
     
     //the form is cleared when we click clear form button
-    public void clearForm(ActionEvent event) throws SQLException{
+    public void clearForm() throws SQLException{
         actionItemClass obj = new actionItemClass();
         obj.clearForm(this);
     }
@@ -762,13 +760,16 @@ public class FXMLDocumentController implements Initializable {
         // do what you have to do
         stage.close();
     }
+    public void deleteActionItem() throws SQLException {
+        actionItemClass obj = new actionItemClass();
+        obj.deleteActionItem(this);
+    }
 
     /**
      * if we click on the sorting direction, the action items are sorted and displayed
      * @throws SQLException
      */
     @FXML
-    
     public void consoleFirstSorting() {
         
     }
@@ -846,6 +847,7 @@ public class FXMLDocumentController implements Initializable {
         members_removeFromList.setDisable(true);
         members_addAffliation.setDisable(true);
         members_removeAffliation.setDisable(true);
+        showAvailableMembers();
 //        ObservableList<String> teamsList = FXCollections.observableArrayList();
 //        teams t = new teams();
 //        teamsList = t.retrieveteams();
