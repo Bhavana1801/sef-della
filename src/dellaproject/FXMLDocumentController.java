@@ -115,6 +115,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML private Button teams_addAssociation;
     @FXML private Button teams_removeAssociation;
     @FXML private Circle teams_Circle;
+     ObservableList<String> itemList;
     public FXMLDocumentController() {
         this.action_inclusionFactor = new ComboBox<>();
         this.action_sortingDirection = new ComboBox<>();
@@ -137,8 +138,9 @@ public class FXMLDocumentController implements Initializable {
         this.action_Member = new ComboBox<>();
         this.action_Team = new ComboBox<>();
         this.action_dueDate = new TextField();
-    }
 
+    }
+    
     public Label getLabel() {
         return label;
     }
@@ -625,7 +627,7 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("You clicked me!");
         label.setText("Hello World!");
     }
-    
+    boolean isOnline = false;
     @Override
     public void initialize(URL url, ResourceBundle rb) {    
         
@@ -635,13 +637,19 @@ public class FXMLDocumentController implements Initializable {
               public void run() {
               String Status = new InternetConnection().getInternetStatus();
               if(Status.equals("Online")) {
+                  System.out.println("online");
                   console_Circle.setFill(Color.GREEN);
                   action_Circle.setFill(Color.GREEN);
                   members_Circle.setFill(Color.GREEN);
                   teams_Circle.setFill(Color.GREEN);
-                     boolean isOnline = true;
+//                  console_label.setText("Online");
+//                       action_label.setText("Online");
+//                       members_label.setText("Online");
+//                       teams_label.setText("Online");
+                     isOnline = true;
               }
               else {
+                  System.out.println("online");
                     console_Circle.setFill(Color.RED);
                     action_Circle.setFill(Color.RED);
                     members_Circle.setFill(Color.RED);
@@ -651,12 +659,16 @@ public class FXMLDocumentController implements Initializable {
                        members_label.setText("Trying to reconnect...!!!");
                        teams_label.setText("Trying to reconnect...!!!");
                        
-                     boolean isOnline = false;
+                    isOnline = false;
               }
       }
-         }, 0, 500);
+         }, 0, 100);
         try {
-            consoleDisplay();
+            if(isOnline == true ) {
+                System.out.println("oh my god");
+               consoleDisplay(); 
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -675,6 +687,7 @@ public class FXMLDocumentController implements Initializable {
         getAction_Status().getSelectionModel().selectFirst();
         getAction_Member().getSelectionModel().selectFirst();
         getAction_Team().getSelectionModel().selectFirst();
+        
     }
     //the form is saved-action item form
     public void saveForm(ActionEvent event) throws SQLException, ParseException {
@@ -696,7 +709,8 @@ public class FXMLDocumentController implements Initializable {
     public void consoleSelectItem() throws SQLException{
         System.out.println("came here");
         ConsoleClass obj = new ConsoleClass();
-        obj.consoleSelectItem(this);
+        String item = console_actionItemList.getSelectionModel().getSelectedItem();
+        obj.consoleSelectItem(this,item);
     }
     //the action item form is updated.
     public void updateActionItem() throws SQLException {
@@ -706,8 +720,11 @@ public class FXMLDocumentController implements Initializable {
     }
     //select an item from console and if we click action item screen,details are displayed
     public void displayActionItemScreen() throws SQLException {
+        String item = console_actionItemList
+                .getSelectionModel().getSelectedItem();
+        getAction_Name().setDisable(true);
         actionItemClass obj = new actionItemClass();
-        obj.displayActionItemScreen(this);
+        obj.displayActionItemScreen(this,item);
     }
     public void consoleSortingDirection() throws SQLException {
         ConsoleClass obj = new ConsoleClass();
@@ -778,6 +795,14 @@ public class FXMLDocumentController implements Initializable {
     }
     public void consoleInclusionFactor() {
         
+    }
+    public void ActionSelected() throws SQLException {
+        String item = getAction_actionItems().getSelectionModel().getSelectedItem();
+        actionItemClass obj = new actionItemClass();
+        obj.displayActionItemScreen(this, item);
+        ConsoleClass obj2 = new ConsoleClass();
+        console_actionItemList.getSelectionModel().select(item);
+        obj2.consoleSelectItem(this, item);
     }
     public void addMember() throws SQLException{
         
@@ -912,4 +937,5 @@ public class FXMLDocumentController implements Initializable {
         showcurrentmembers(team_associated);
         showAvailableMembers();
     }
+    
 }

@@ -26,6 +26,37 @@ import javafx.scene.control.TextField;
  * @author bhavs
  */
 public class actionItemClass {
+    public void alertDate() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("duedate cannot be less than current date");
+        alert.setContentText("please enter correct date in yyyy/mm/dd format");
+        alert.showAndWait();
+    }
+    public void alertNameExists() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Name already exists");
+            alert.setContentText("please select another name for the action item");
+
+            alert.showAndWait();
+    }
+    public void alertNameIsEmpty() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Name cannot be empty");
+            alert.setContentText("please select ar name for your action item");
+            alert.showAndWait();
+    }
+    public void alertWrongDate() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("wrong date format");
+            alert.setContentText("please enter the date in correct format");
+            alert.setContentText("yyyy/mm/dd");
+
+            alert.showAndWait();
+    }
     public void saveForm(FXMLDocumentController fx) throws SQLException, ParseException {
               
         System.out.println("create a new action form");
@@ -36,6 +67,7 @@ public class actionItemClass {
         String Description = fx.getAction_Description().getText();
         String Resolution = fx.getAction_Resolution().getText();
         String date2 = fx.getAction_dueDate().getText();
+        String status = fx.getAction_Status().getSelectionModel().getSelectedItem();
         Date creationDate = new Date();
         Date dueDate = new Date();
         //stores the system date as the creation date into the database(date1).
@@ -59,12 +91,7 @@ public class actionItemClass {
                            forDate = true;
                 }
                 else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information Dialog");
-                    alert.setHeaderText("duedate cannot be less than current date");
-                    alert.setContentText("please enter correct date in yyyy/mm/dd format");
-
-                    alert.showAndWait();
+                    alertDate();
                     return;
                 }
             } 
@@ -81,37 +108,21 @@ public class actionItemClass {
         }
         //if the action item name already exists alert message is shown.
         if(itemList.contains(name)&&forDate==true) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setHeaderText("Name already exists");
-            alert.setContentText("please select another name for the action item");
-
-            alert.showAndWait();
+            alertNameExists();
             return;
         }
         // if the action item name is empty, warning is shown
         else if(name.equals("") && forDate ==true) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setHeaderText("Name cannot be empty");
-            alert.setContentText("please select ar name for your action item");
-
-            alert.showAndWait();
+            alertNameIsEmpty();
             return;
         }
         //if duedate is not in correct format.
         else if(forDate==false){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Warning Dialog");
-            alert.setHeaderText("wrong date format");
-            alert.setContentText("please enter the date in correct format");
-            alert.setContentText("yyyy/mm/dd");
-
-            alert.showAndWait();
+            alertWrongDate();
             return;
         }
         //inserting values into the database
-        sql = "INSERT INTO sample VALUES('"+name+"','"+Description+"','"+Resolution+"','"+date1+"','"+date2+"')";
+        sql = "INSERT INTO sample VALUES('"+name+"','"+Description+"','"+Resolution+"','"+date1+"','"+date2+"','"+status+"')";
         st.executeUpdate(sql);
         st.close();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -134,19 +145,67 @@ public class actionItemClass {
        String name = fx.getAction_Name().getText();
        String Description = fx.getAction_Description().getText();
        String Resolution = fx.getAction_Resolution().getText();
-       String sql = "UPDATE sample SET description='"+Description+"',resolution='"+Resolution+"'WHERE name='"+name+"'";
-       System.out.println(name+Description+Resolution);
-        ResultSet rs = con1.createStatement().executeQuery(sql);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Hurray!!!");
-            alert.setContentText("your action item is updated succesfully!!!");
-            alert.showAndWait();
+       String date1 = fx.getAction_dueDate().getText();
+       String date2 = fx.getAction_dueDate().getText();
+       String status = fx.getAction_Status().getSelectionModel().getSelectedItem();
+       boolean forDate = false;
+       Date dueDate = new Date();
+       Date creationDate = new Date();
+       
+       //checking duedate entered is valid.
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            System.out.println("in try");
+            dueDate = df.parse(date2);
+            creationDate = df.parse(date1);
+            if(date2.length()==10) {
+                if(dueDate.compareTo(creationDate)>=0) {
+                           forDate = true;
+                }
+                else {
+                    alertDate();
+                    return;
+                }
+            } 
+        }
+        catch(ParseException e) {
+            System.out.println("in catch");
+        }
+//        String sql = "SELECT name FROM sample";
+//        ResultSet rs = con1.createStatement().executeQuery(sql);
+//        ObservableList<String> itemList = FXCollections.observableArrayList();
+//        while(rs.next()){
+//            String str = rs.getString("name");
+//            itemList.add(str);
+//        }
+//        //if the action item name already exists alert message is shown.
+//        if(itemList.contains(name)&&forDate==true) {
+//            alertNameExists();
+//            return;
+//        }
+        // if the action item name is empty, warning is shown
+        if(name.equals("") && forDate ==true) {
+            alertNameIsEmpty();
+            return;
+        }
+        //if duedate is not in correct format.
+        else if(forDate==false){
+            alertWrongDate();
+            return;
+        }
+        //inserting values into the database
+       String sql = "UPDATE sample SET description='"+Description+"',resolution='"+Resolution+"',duedate='"+date2+"',status='"+status+"' WHERE name = '"+name+"'";
+       ResultSet rs = con1.createStatement().executeQuery(sql);
+       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+       alert.setTitle("Information Dialog");
+       alert.setHeaderText("Hurray!!!");
+       alert.setContentText("your action item is updated succesfully!!!");
+       alert.showAndWait();
         
     }
-    public void displayActionItemScreen(FXMLDocumentController fx) throws SQLException {
+    public void displayActionItemScreen(FXMLDocumentController fx,String item) throws SQLException {
         System.out.println("action item screen is clicked");
-        String item = fx.console_actionItemList.getSelectionModel().getSelectedItem();
+        
         System.out.println(item);
         Connection con3 = fx.connect();
         //displays current date.
@@ -161,11 +220,18 @@ public class actionItemClass {
             String desc = rs.getString("description");
             String res = rs.getString("resolution");
             String date = rs.getString("creation");
+            String duedate = rs.getString("duedate");
+            String status = rs.getString("status");
             fx.getAction_Name().setText(name);
             fx.getAction_Description().setText(desc);
             fx.getAction_Resolution().setText(res);
-            fx.getAction_creation().setText(date);
-            
+            fx.getAction_creation().setText(date);  
+            fx.getAction_dueDate().setText(duedate);
+            fx.getAction_Status().getSelectionModel().select(status);
+        }
+        fx.getAction_actionItems().setItems(fx.itemList);
+        if(item != null && !item.isEmpty()) {
+           fx.getAction_actionItems().getSelectionModel().select(item);
         }
     }
     public void deleteActionItem(FXMLDocumentController fx) throws SQLException {

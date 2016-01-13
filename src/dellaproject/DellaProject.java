@@ -22,7 +22,7 @@ public class DellaProject extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         stage.setTitle("Della");
         Scene scene = new Scene(root);
-        
+        System.out.println("in start");
         stage.setScene(scene);
         stage.show();
     }

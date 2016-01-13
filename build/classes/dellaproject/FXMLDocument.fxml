@@ -71,6 +71,7 @@
             <ComboBox fx:id="console_inclusionFactor" layoutX="462.0" layoutY="215.0" prefHeight="21.0" prefWidth="118.482421875">
               <items>
                 <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="All Action Items" />
                   <String fx:value="Open Action Items" />
                   <String fx:value="Closed Action Items" />
                 </FXCollections>
@@ -83,7 +84,11 @@
             <Label fx:id="console_Status" layoutX="536.0" layoutY="314.0" text="status" />
             <Label fx:id="console_memberDetails" layoutX="481.0" layoutY="349.0" text="member details" />
             <Label fx:id="console_teamDetails" layoutX="495.0" layoutY="391.0" text="Label" />
-            <Circle id="console_circle" fx:id="console_Circle" fill="#606060" layoutX="571.0" layoutY="27.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="console_circle" fx:id="console_Circle" layoutX="571.0" layoutY="27.0" radius="12.0" stroke="BLACK" strokeType="INSIDE">
+              <fill>
+                <Color blue="0.000" green="0.600" red="0.192" fx:id="x1" />
+              </fill>
+            </Circle>
             <Label fx:id="console_label" layoutX="345.0" layoutY="19.0" prefWidth="163.93359375" text="" />
           </children>
         </AnchorPane>
@@ -96,7 +101,7 @@
             <ListView layoutX="-15.0" layoutY="12.0" prefHeight="29.0" prefWidth="616.0" />
             <Text layoutX="266.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Action Items" />
             <Text layoutX="22.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Action Items:" />
-            <ComboBox id="actionItems" fx:id="action_actionItems" layoutX="6.0" layoutY="69.0" prefHeight="25.0" prefWidth="587.0" />
+            <ComboBox id="actionItems" fx:id="action_actionItems" layoutX="6.0" layoutY="69.0" onAction="#ActionSelected" prefHeight="25.0" prefWidth="587.0" />
             <Text layoutX="12.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inclusion Factor :" />
             <Text layoutX="150.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sorting Direction :" />
             <Text layoutX="304.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Sorting Factor :" wrappingWidth="105.744140625" />
@@ -188,11 +193,7 @@
               </items>
             </ComboBox>
             <Label fx:id="action_creation" layoutX="506.0" layoutY="217.0" prefWidth="105.744140625" text="Label" />
-            <Circle id="console_circle" fx:id="action_Circle" layoutX="564.0" layoutY="26.0" radius="12.0" stroke="BLACK" strokeType="INSIDE">
-              <fill>
-                <Color blue="0.376" green="0.376" red="0.376" fx:id="x1" />
-              </fill>
-            </Circle>
+            <Circle id="console_circle" fx:id="action_Circle" fill="$x1" layoutX="564.0" layoutY="26.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
             <Label fx:id="action_label" layoutX="357.0" layoutY="18.0" prefWidth="163.93359375" text="" />
           </children>
         </AnchorPane>
@@ -234,7 +235,11 @@
             <ListView fx:id="members_avail" layoutX="17.0" layoutY="323.0" onMouseClicked="#disableRemoveAffliation" prefHeight="148.0" prefWidth="200.0" />
             <ListView fx:id="members_indiv" layoutX="398.0" layoutY="47.0" onMouseClicked="#disableAddToList" onMousePressed="#showAvailableTeams" prefHeight="183.99993896484375" prefWidth="200.0" />
             <ListView fx:id="members_current" layoutX="415.0" layoutY="323.0" onMouseClicked="#disableAddAffliation" prefHeight="139.98828125" prefWidth="200.0" />
-            <Circle id="console_circle" fx:id="members_Circle" fill="$x1" layoutX="546.0" layoutY="19.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="console_circle" fx:id="members_Circle" layoutX="546.0" layoutY="19.0" radius="12.0" stroke="BLACK" strokeType="INSIDE">
+              <fill>
+                <Color blue="0.000" green="0.600" red="0.048" fx:id="x2" />
+              </fill>
+            </Circle>
             <Label fx:id="members_label" layoutX="333.0" layoutY="11.0" prefWidth="163.93359375" text="" />
           </children>
         </AnchorPane>
@@ -285,7 +290,7 @@
             <ListView fx:id="teams_avail" layoutX="10.0" layoutY="335.0" onMouseClicked="#disableAddAssociation" prefHeight="136.0" prefWidth="200.0" />
             <ListView fx:id="teams_known" layoutX="412.0" layoutY="63.0" onMouseClicked="#disableAddToList" onMousePressed="#showAvailableMembers" prefHeight="173.0" prefWidth="200.0" />
             <ListView id="teams_removeAssociation" fx:id="teams_current" layoutX="404.0" layoutY="337.0" onMouseClicked="#disableRemoveAssociation" prefHeight="136.0" prefWidth="200.0" />
-            <Circle id="console_circle" fx:id="teams_Circle" fill="$x1" layoutX="566.0" layoutY="20.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="console_circle" fx:id="teams_Circle" fill="$x2" layoutX="566.0" layoutY="20.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
             <Label fx:id="teams_label" layoutX="347.0" layoutY="9.0" prefWidth="163.93359375" text="" />
           </children>
         </AnchorPane>
