@@ -720,9 +720,9 @@ public class FXMLDocumentController implements Initializable {
     }
     //select an item from console and if we click action item screen,details are displayed
     public void displayActionItemScreen() throws SQLException {
-        String item = console_actionItemList
-                .getSelectionModel().getSelectedItem();
-        getAction_Name().setDisable(true);
+        String item = console_actionItemList.getSelectionModel().getSelectedItem();
+        if(item != null && !item.isEmpty())
+            getAction_Name().setDisable(true);
         actionItemClass obj = new actionItemClass();
         obj.displayActionItemScreen(this,item);
     }
@@ -793,8 +793,9 @@ public class FXMLDocumentController implements Initializable {
     public void consoleSecondSorting() {
         
     }
-    public void consoleInclusionFactor() {
-        
+    public void consoleInclusionFactor() throws SQLException {
+        ConsoleClass obj = new ConsoleClass();
+        obj.consoleInclusionFactor(this);
     }
     public void ActionSelected() throws SQLException {
         String item = getAction_actionItems().getSelectionModel().getSelectedItem();

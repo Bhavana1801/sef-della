@@ -68,7 +68,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <ComboBox fx:id="console_inclusionFactor" layoutX="462.0" layoutY="215.0" prefHeight="21.0" prefWidth="118.482421875">
+            <ComboBox fx:id="console_inclusionFactor" layoutX="462.0" layoutY="215.0" onAction="#consoleInclusionFactor" prefHeight="21.0" prefWidth="118.482421875">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="All Action Items" />

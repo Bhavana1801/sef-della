@@ -82,6 +82,7 @@ public class ConsoleClass {
             String name = rs.getString("name"); 
             list.add(name);
         }
+        System.out.println(list);
         FXCollections.sort(list);
         if(cmd.equals("Small to Large")) {
             fx.console_actionItemList.setItems(list);
@@ -92,5 +93,31 @@ public class ConsoleClass {
             list2.add(list.get(i));
         }
         fx.console_actionItemList.setItems(list2);
+    }
+    public void consoleInclusionFactor(FXMLDocumentController fx) throws SQLException {
+        System.out.println("console inclusion factor");
+        Connection con = fx.connect();
+        String cmd = fx.getConsole_inclusionFactor().getSelectionModel().getSelectedItem();
+        System.out.println(cmd);
+        if(cmd.equals("Open Action Items")) {
+            cmd = "Open";
+        }
+        else if(cmd.equals("Closed Action Items")){
+            cmd = "Closed";
+        }
+        else {
+            consoleSortingDirection(fx);
+            return;
+        }
+        System.out.println(cmd);
+        String sql = "SELECT name FROM sample where status='"+cmd+"'";
+        ResultSet rs = con.createStatement().executeQuery(sql);
+        ObservableList<String> list = FXCollections.observableArrayList();
+        while(rs.next()){
+            String name = rs.getString("name"); 
+            list.add(name);
+        }
+        System.out.println(list);
+        fx.console_actionItemList.setItems(list);
     }
 }
