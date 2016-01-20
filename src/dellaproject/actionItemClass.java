@@ -57,6 +57,7 @@ public class actionItemClass {
 
             alert.showAndWait();
     }
+    
     public void saveForm(FXMLDocumentController fx) throws SQLException, ParseException {
               
         System.out.println("create a new action form");

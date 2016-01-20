@@ -613,7 +613,10 @@ public class FXMLDocumentController implements Initializable {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             con = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","bhavs","bhavs");
+            if(con!=null)
             System.out.println("succesfull connection");
+            else
+             System.out.println("not connected");   
         }
         catch(ClassNotFoundException cnfe) {
             System.out.println("connection failed"+cnfe);
@@ -662,7 +665,7 @@ public class FXMLDocumentController implements Initializable {
                     isOnline = false;
               }
       }
-         }, 0, 100);
+         }, 0, 10000);
         try {
             if(isOnline == true ) {
                 System.out.println("oh my god");
@@ -671,8 +674,11 @@ public class FXMLDocumentController implements Initializable {
             
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
         initializeAll();
+        
     }
     // it initializes all the comboBoxes to first values in it.
     public void initializeAll() {
@@ -701,9 +707,11 @@ public class FXMLDocumentController implements Initializable {
         obj.clearForm(this);
     }
     //displays list of action items list on console screen
-    public void consoleDisplay() throws SQLException {
+    public void consoleDisplay() throws SQLException, ClassNotFoundException {
         ConsoleClass obj = new ConsoleClass();
+        
         obj.consoleDisplay(this);
+        obj.getData(this);
     }
     //details of a particular item selected is shown on console screen
     public void consoleSelectItem() throws SQLException{
@@ -730,6 +738,8 @@ public class FXMLDocumentController implements Initializable {
         ConsoleClass obj = new ConsoleClass();
         obj.consoleSortingDirection(this);
     }
+    
+    
     // addToList button is disabled when user clicks on right side box
     public void disableAddToList() {
         members_addToList.setDisable(true);
@@ -787,8 +797,9 @@ public class FXMLDocumentController implements Initializable {
      * @throws SQLException
      */
     @FXML
-    public void consoleFirstSorting() {
-        
+    public void consoleFirstSorting() throws SQLException {
+        ConsoleClass obj = new ConsoleClass();
+        obj.consoleFirstSorting(this);
     }
     public void consoleSecondSorting() {
         

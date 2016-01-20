@@ -5,9 +5,22 @@
  */
 package dellaproject;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Hashtable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -15,8 +28,57 @@ import javafx.collections.ObservableList;
  *
  * @author bhavs
  */
-public class ConsoleClass {
-
+public class ConsoleClass implements Serializable{
+    Hashtable<String,ArrayList<String>> data = new Hashtable<>();
+    ArrayList<String> dataList;
+    public void getData(FXMLDocumentController fx) throws SQLException, ClassNotFoundException {
+        Connection con = fx.connect();
+        String str = "SELECT * from sample";
+        ResultSet rs = con.createStatement().executeQuery(str);
+        
+        while(rs.next()) {
+            dataList = new ArrayList<String>();
+            dataList.add(rs.getString("name"));
+            dataList.add(rs.getString("description"));
+            dataList.add(rs.getString("resolution"));
+            dataList.add(rs.getString("creation"));
+            dataList.add(rs.getString("duedate"));
+            dataList.add(rs.getString("status"));
+            data.put(rs.getString("name"),dataList);
+        }
+        
+        System.out.println(data);
+    }
+    public void storeActionItem() throws ClassNotFoundException {
+        System.out.println("storing into file");
+        try {
+            FileOutputStream fout = new FileOutputStream("actionitems.txt");
+            ObjectOutputStream out = new ObjectOutputStream(fout);
+            out.writeObject(data);
+            fout.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        
+    }
+    public void readActionItem() throws ClassNotFoundException {
+        System.out.println("reading data from file");
+        Hashtable<String,ArrayList<String>> data2 = new Hashtable<>();
+        try {
+            FileInputStream fin = new FileInputStream("actionitems.txt");
+            ObjectInputStream in = new ObjectInputStream(fin);
+            
+            data2 = (Hashtable<String,ArrayList<String>>)in.readObject();
+            in.close();
+            fin.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("********************");
+        System.out.println(data2);
+    }
     public void consoleDisplay(FXMLDocumentController fx) throws SQLException {
         System.out.println("console display");
         //initializing the list everytime the display is clicked.
@@ -119,5 +181,40 @@ public class ConsoleClass {
         }
         System.out.println(list);
         fx.console_actionItemList.setItems(list);
+    }
+    public void consoleFirstSorting(FXMLDocumentController fx) throws SQLException {
+        System.out.println("console first sorting");
+        Connection con = fx.connect();
+        String option = fx.getConsole_firstSortingFactor().getSelectionModel().getSelectedItem();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        System.out.println(option);
+        if(option.equals("Creation Date")) {
+            sortingCreation(fx);
+        }
+
+    }
+    public void sortingCreation(FXMLDocumentController fx) throws SQLException {
+        String sql = "SELECT creation FROM sample";
+        Connection con = fx.connect();
+        ResultSet rs = con.createStatement().executeQuery(sql);
+        ObservableList<String> list = FXCollections.observableArrayList();
+        while(rs.next()){
+            String name = rs.getString("creation"); 
+            list.add(name);
+        }
+        list.add("2015/01/01");
+        System.out.println(list);
+        Collections.sort(list, new Comparator<String>() {
+        DateFormat f = new SimpleDateFormat("yyyy/MM/dd");
+        @Override
+        public int compare(String o1, String o2) {
+            try {
+                return f.parse(o1).compareTo(f.parse(o2));
+            } catch (ParseException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+    });
+    System.out.println(list);
     }
 }
