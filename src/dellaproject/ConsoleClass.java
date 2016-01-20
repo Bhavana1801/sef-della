@@ -28,7 +28,7 @@ import javafx.collections.ObservableList;
  *
  * @author bhavs
  */
-public class ConsoleClass implements Serializable{
+public class ConsoleClass {
     Hashtable<String,ArrayList<String>> data = new Hashtable<>();
     ArrayList<String> dataList;
     public void getData(FXMLDocumentController fx) throws SQLException, ClassNotFoundException {
@@ -49,36 +49,36 @@ public class ConsoleClass implements Serializable{
         
         System.out.println(data);
     }
-    public void storeActionItem() throws ClassNotFoundException {
-        System.out.println("storing into file");
-        try {
-            FileOutputStream fout = new FileOutputStream("actionitems.txt");
-            ObjectOutputStream out = new ObjectOutputStream(fout);
-            out.writeObject(data);
-            fout.close();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
-        
-    }
-    public void readActionItem() throws ClassNotFoundException {
-        System.out.println("reading data from file");
-        Hashtable<String,ArrayList<String>> data2 = new Hashtable<>();
-        try {
-            FileInputStream fin = new FileInputStream("actionitems.txt");
-            ObjectInputStream in = new ObjectInputStream(fin);
-            
-            data2 = (Hashtable<String,ArrayList<String>>)in.readObject();
-            in.close();
-            fin.close();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("********************");
-        System.out.println(data2);
-    }
+//    public void storeActionItem() throws ClassNotFoundException {
+//        System.out.println("storing into file");
+//        try {
+//            FileOutputStream fout = new FileOutputStream("actionitems.txt");
+//            ObjectOutputStream out = new ObjectOutputStream(fout);
+//            out.writeObject(data);
+//            fout.close();
+//        }
+//        catch(IOException e) {
+//            e.printStackTrace();
+//        }
+//        
+//    }
+//    public void readActionItem() throws ClassNotFoundException {
+//        System.out.println("reading data from file");
+//        Hashtable<String,ArrayList<String>> data2 = new Hashtable<>();
+//        try {
+//            FileInputStream fin = new FileInputStream("actionitems.txt");
+//            ObjectInputStream in = new ObjectInputStream(fin);
+//            
+//            data2 = (Hashtable<String,ArrayList<String>>)in.readObject();
+//            in.close();
+//            fin.close();
+//        }
+//        catch(IOException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("********************");
+//        System.out.println(data2);
+//    }
     public void consoleDisplay(FXMLDocumentController fx) throws SQLException {
         System.out.println("console display");
         //initializing the list everytime the display is clicked.

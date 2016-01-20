@@ -665,7 +665,7 @@ public class FXMLDocumentController implements Initializable {
                     isOnline = false;
               }
       }
-         }, 0, 10000);
+         }, 0, 500);
         try {
             if(isOnline == true ) {
                 System.out.println("oh my god");
@@ -678,6 +678,17 @@ public class FXMLDocumentController implements Initializable {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
         initializeAll();
+        try {
+            connect();
+            retreivemember();
+            retrieveteams();
+//            showAvailableMembers();
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     // it initializes all the comboBoxes to first values in it.
@@ -770,8 +781,8 @@ public class FXMLDocumentController implements Initializable {
     // addAssociation button is disabled when user clicks on right side box
     public void disableAddAssociation() {
         System.out.println("disable add affliation");
-        teams_addAssociation.setDisable(true);
-        teams_removeAssociation.setDisable(false);
+        teams_addAssociation.setDisable(false);
+        teams_removeAssociation.setDisable(true);
     }
     // removeAssociation button is disabled when user clicks on left side box
     public void disableRemoveAssociation() {
@@ -817,60 +828,47 @@ public class FXMLDocumentController implements Initializable {
         obj2.consoleSelectItem(this, item);
     }
     public void addMember() throws SQLException{
-        
-       members m=new members();
-        String membername=members_name.getText();
-        m.addmembers(membername);
-        retreivemember();
-    }
+        members m=new members();
+        m.addmembers(this);
+     }
     public void removeMember() throws SQLException{
-       String name = members_indiv.getSelectionModel().getSelectedItem();
         members m1 =new members();
-        m1.deletemembers(name);
-        retreivemember();
-    }
+        m1.deletemembers(this);
+      }
     public void retreivemember() throws SQLException{
          members m2= new members();
         ObservableList<String> allmember = FXCollections.observableArrayList();
         allmember=m2.retrievemembers();
         members_indiv.setItems(allmember);
     }
+    
     public void showAvailableTeams() throws SQLException{
+        System.out.println("show teams");
        members m3=new members();
      ObservableList<String> availableteam = FXCollections.observableArrayList();
      String name=members_indiv.getSelectionModel().getSelectedItem();
-      availableteam=m3.AvailableTeams(name);
+      System.out.println(name);
+     availableteam=m3.AvailableTeams(name);
       members_avail.setItems(availableteam);
       showCurrentTeams(name);
     }
     public void showCurrentTeams(String name) throws SQLException{
         members m4=new members();
         ObservableList<String> currentteam = FXCollections.observableArrayList();
-     //String name=members_indiv.getSelectionModel().getSelectedItem();
       currentteam=m4.currentTeams(name);
       members_current.setItems(currentteam);
     }
-    public void addAffiliation() throws SQLException {
-       String teamname=(String)members_avail.getSelectionModel().getSelectedItem();
-       String  membername=(String)members_indiv.getSelectionModel().getSelectedItem();     
+    public void addAffiliation() throws SQLException {    
        members m5=new members();
-       m5.addaffliation(teamname,membername);
-       showAvailableTeams();
-       showCurrentTeams(membername);
+       m5.addaffliation(this);
     }
     public void removeAffiliation() throws SQLException {
-      String teamname=(String)members_avail.getSelectionModel().getSelectedItem();
-       String  membername=(String)members_indiv.getSelectionModel().getSelectedItem();
        members m4=new members();
-       m4.removeaffliation(teamname,membername);
-       showAvailableTeams();
-       showCurrentTeams(membername);
+       m4.removeaffliation(this);
     }
     public void addTeam() throws SQLException {
         teams t=new teams();
-        String teamname=teams_name.getText();
-        t.addteam(teamname);
-        retrieveteams();
+        t.addteam(this);
     }
     public void teamsScreen() throws SQLException {
         teams_addToList.setDisable(true);
@@ -884,18 +882,13 @@ public class FXMLDocumentController implements Initializable {
         members_removeFromList.setDisable(true);
         members_addAffliation.setDisable(true);
         members_removeAffliation.setDisable(true);
-        showAvailableMembers();
-//        ObservableList<String> teamsList = FXCollections.observableArrayList();
-//        teams t = new teams();
-//        teamsList = t.retrieveteams();
+
         
     }
     
     public void removeTeam() throws SQLException{
-        String name = teams_name.getText();
         teams t1=new teams();
-        t1.deleteteam(name);
-        retrieveteams();
+        t1.deleteteam(this);
     }
      public void retrieveteams() throws SQLException{
          teams t2= new teams();
@@ -944,10 +937,9 @@ public class FXMLDocumentController implements Initializable {
         Connection connection=connect();
         Statement st=connection.createStatement();
          String team_associated=(String)teams_known.getSelectionModel().getSelectedItem();
-        String member_associated_toteam=(String)teams_avail.getSelectionModel().getSelectedItem();
+        String member_associated_toteam=(String)teams_current.getSelectionModel().getSelectedItem();
         st.executeUpdate("delete from association where team='"+team_associated+"' and member='"+member_associated_toteam+"'" );
         showcurrentmembers(team_associated);
         showAvailableMembers();
     }
-    
 }

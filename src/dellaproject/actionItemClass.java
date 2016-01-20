@@ -131,7 +131,7 @@ public class actionItemClass {
             alert.setHeaderText("Hurray!!!");
             alert.setContentText("your action item is created succesfully!!!");
             alert.showAndWait();
-        fx.clearForm();
+        clearForm(fx);
     }
     public void clearForm(FXMLDocumentController fx) throws SQLException{
         System.out.println("clear this form");
@@ -245,8 +245,7 @@ public class actionItemClass {
             alert.setHeaderText("Hurray!!!");
             alert.setContentText("your action item '"+name+"' is deleted succesfully!!!");
             alert.showAndWait();
-        fx.clearForm();
-        fx.clearForm();
+        clearForm(fx);
     }
     
 }
