@@ -124,9 +124,9 @@
             <TextField id="actionItemDueDate" fx:id="action_dueDate" layoutX="493.0" layoutY="243.0" prefHeight="25.0" prefWidth="97.0" />
             <Text layoutX="448.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use yyyy/mm/dd format" />
             <Button fx:id="action_Update" layoutY="439.0" mnemonicParsing="false" onMouseClicked="#updateActionItem" text="Update this Action Item" />
-            <Button layoutX="142.0" layoutY="439.0" mnemonicParsing="false" onAction="#clearForm" text="Clear This Form" />
-            <Button layoutX="240.0" layoutY="439.0" mnemonicParsing="false" onAction="#saveForm" prefHeight="25.0" prefWidth="177.0" text="Create a  New Action  Item" />
-            <Button layoutX="417.0" layoutY="439.0" mnemonicParsing="false" onAction="#deleteActionItem" prefHeight="25.0" prefWidth="183.0" text="Delete  the   Action   Item" />
+            <Button fx:id="action_Clear" layoutX="142.0" layoutY="439.0" mnemonicParsing="false" onAction="#clearForm" text="Clear This Form" />
+            <Button fx:id="action_Create" layoutX="240.0" layoutY="439.0" mnemonicParsing="false" onAction="#saveForm" prefHeight="25.0" prefWidth="177.0" text="Create a  New Action  Item" />
+            <Button fx:id="action_delete" layoutX="417.0" layoutY="439.0" mnemonicParsing="false" onAction="#deleteActionItem" prefHeight="25.0" prefWidth="183.0" text="Delete  the   Action   Item" />
             <ComboBox id="inclusionFactor" fx:id="action_inclusionFactor" layoutX="14.0" layoutY="144.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
@@ -174,7 +174,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <ComboBox fx:id="action_Member" layoutX="469.0" layoutY="366.0">
+            <ComboBox fx:id="action_Member" layoutX="469.0" layoutY="366.0" onAction="#get_teams">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
@@ -183,7 +183,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <ComboBox fx:id="action_Team" layoutX="471.0" layoutY="414.0">
+            <ComboBox fx:id="action_Team" layoutX="471.0" layoutY="414.0" onAction="#get_Members">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />

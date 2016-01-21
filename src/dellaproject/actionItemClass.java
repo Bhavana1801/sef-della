@@ -13,6 +13,8 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -204,10 +206,39 @@ public class actionItemClass {
        alert.showAndWait();
         
     }
-    public void displayActionItemScreen(FXMLDocumentController fx,String item) throws SQLException {
+    public void offlineActionItemScreen(FXMLDocumentController fx,String item) throws ClassNotFoundException {
+        System.out.println("offline action item select item");
+        ConsoleClass obj = new ConsoleClass();
+        obj.readActionItem(fx);
+       
+        Set<String> keys = fx.data2.keySet();
+        for(String key: keys){
+            System.out.println(key);
+            if(!fx.itemList.contains(key))
+                fx.itemList.add(key);
+        }
+        fx.getAction_actionItems().setItems(fx.itemList);
+        if(item != null && !item.isEmpty()) {
+            ArrayList<String> temp = new ArrayList<>();
+            temp = fx.data2.get(item);
+            fx.getAction_Name().setText(temp.get(0));
+            fx.getAction_Description().setText(temp.get(1));
+            fx.getAction_Resolution().setText(temp.get(2));
+            fx.getAction_creation().setText(temp.get(3));
+            fx.getAction_dueDate().setText(temp.get(4));
+            fx.getAction_Status().getSelectionModel().select(temp.get(5));
+            fx.getAction_actionItems().getSelectionModel().select(item);
+        }
+            
+    }
+    public void displayActionItemScreen(FXMLDocumentController fx,String item) throws SQLException, ClassNotFoundException {
         System.out.println("action item screen is clicked");
         
         System.out.println(item);
+        if(fx.dbStatus == false) {
+            offlineActionItemScreen(fx,item);
+            return;
+        }
         Connection con3 = fx.connect();
         //displays current date.
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd");

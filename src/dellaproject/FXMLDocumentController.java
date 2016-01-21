@@ -36,6 +36,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Hashtable;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.scene.paint.Color;
@@ -87,6 +88,9 @@ public class FXMLDocumentController implements Initializable {
     @FXML private Label action_creation;
     @FXML private ComboBox<String> action_Status;
     @FXML private Circle action_Circle;
+    @FXML private Button action_Clear;
+    @FXML private Button action_Create;
+    @FXML private Button action_delete;
     //members screen
     
     @FXML private TextField members_name;
@@ -605,24 +609,37 @@ public class FXMLDocumentController implements Initializable {
         this.teams_Circle = teams_Circle;
     }
     
-       
-    
-    public Connection connect() throws SQLException{
+     Hashtable<String,ArrayList<String>> data2 = new Hashtable<>();  
+    boolean dbStatus = false;
+    public Connection connect() {
                    
         Connection con=null;
+        if(isOnline == false) {
+            dbStatus = false;
+            return con;
+        }
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            con = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","bhavs","bhavs");
-            if(con!=null)
-            System.out.println("succesfull connection");
-            else
-             System.out.println("not connected");   
+            try {
+                con = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","bhavs","bhavs");
+            } catch (SQLException ex) {
+                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("not connected");
+            }
+            if(con!=null) {
+                System.out.println("succesfull connection");
+                dbStatus = true;
+            }
+            else {
+               System.out.println("not connected"); 
+               dbStatus = false;
+            }
+               
         }
         catch(ClassNotFoundException cnfe) {
-            System.out.println("connection failed"+cnfe);
+            System.out.println("connection failed");
         }
-       
-        return con;
+         return con;
     }
     
     @FXML
@@ -633,7 +650,7 @@ public class FXMLDocumentController implements Initializable {
     boolean isOnline = false;
     @Override
     public void initialize(URL url, ResourceBundle rb) {    
-        
+        System.out.println("in initialize method");
         new Timer().schedule(
          new TimerTask() {
              @Override
@@ -645,6 +662,8 @@ public class FXMLDocumentController implements Initializable {
                   action_Circle.setFill(Color.GREEN);
                   members_Circle.setFill(Color.GREEN);
                   teams_Circle.setFill(Color.GREEN);
+                  enableAll();
+                  connect();
 //                  console_label.setText("Online");
 //                       action_label.setText("Online");
 //                       members_label.setText("Online");
@@ -652,43 +671,50 @@ public class FXMLDocumentController implements Initializable {
                      isOnline = true;
               }
               else {
-                  System.out.println("online");
+                  System.out.println("offline");
+                  disableAll();
+                  connect();
                     console_Circle.setFill(Color.RED);
                     action_Circle.setFill(Color.RED);
                     members_Circle.setFill(Color.RED);
                     teams_Circle.setFill(Color.RED);
-                       console_label.setText("Trying to reconnect...!!!");
-                       action_label.setText("Trying to reconnect...!!!");
-                       members_label.setText("Trying to reconnect...!!!");
-                       teams_label.setText("Trying to reconnect...!!!");
+//                       console_label.setText("Trying to reconnect...!!!");
+//                       action_label.setText("Trying to reconnect...!!!");
+//                       members_label.setText("Trying to reconnect...!!!");
+//                       teams_label.setText("Trying to reconnect...!!!");
                        
                     isOnline = false;
               }
       }
-         }, 0, 500);
-        try {
-            if(isOnline == true ) {
-                System.out.println("oh my god");
-               consoleDisplay(); 
-            }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+         }, 0, 10000);
+        
         initializeAll();
-        try {
-            connect();
-            retreivemember();
-            retrieveteams();
-//            showAvailableMembers();
             
+            if(dbStatus == true || isOnline == true) {
+                try {
+                 connect();
+                 enableAll();
+                    consoleDisplay();
+                    retreivemember();
+                    retrieveteams();
+                    all_teams();
+                    all_members();
+                } catch (SQLException | ClassNotFoundException ex) {
+                    Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            //user if offline and there is no db connection
+            else {
+                try {
+                     consoleDisplay();
+                     disableAll();
+                 } catch (SQLException | ClassNotFoundException ex) {
+                     Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+                     
             
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
     }
     // it initializes all the comboBoxes to first values in it.
@@ -706,6 +732,22 @@ public class FXMLDocumentController implements Initializable {
         getAction_Team().getSelectionModel().selectFirst();
         
     }
+    public void disableAll() {
+        members_tab.setDisable(true);
+        teams_tab.setDisable(true);
+        action_Update.setDisable(true);
+        action_Clear.setDisable(true);
+        action_delete.setDisable(true);
+        action_Create.setDisable(true);
+    }
+    public void enableAll() {
+        members_tab.setDisable(false);
+        teams_tab.setDisable(false);
+        action_Update.setDisable(false);
+        action_Clear.setDisable(false);
+        action_delete.setDisable(false);
+        action_Create.setDisable(false);
+    }
     //the form is saved-action item form
     public void saveForm(ActionEvent event) throws SQLException, ParseException {
         actionItemClass obj = new actionItemClass();
@@ -722,7 +764,10 @@ public class FXMLDocumentController implements Initializable {
         ConsoleClass obj = new ConsoleClass();
         
         obj.consoleDisplay(this);
-        obj.getData(this);
+//        if(dbStatus == true) {
+//            obj.getData(this);
+//        }
+        
     }
     //details of a particular item selected is shown on console screen
     public void consoleSelectItem() throws SQLException{
@@ -738,7 +783,7 @@ public class FXMLDocumentController implements Initializable {
         
     }
     //select an item from console and if we click action item screen,details are displayed
-    public void displayActionItemScreen() throws SQLException {
+    public void displayActionItemScreen() throws SQLException, ClassNotFoundException {
         String item = console_actionItemList.getSelectionModel().getSelectedItem();
         if(item != null && !item.isEmpty())
             getAction_Name().setDisable(true);
@@ -748,6 +793,65 @@ public class FXMLDocumentController implements Initializable {
     public void consoleSortingDirection() throws SQLException {
         ConsoleClass obj = new ConsoleClass();
         obj.consoleSortingDirection(this);
+    }
+    //akshay methds
+    public void all_teams()throws SQLException{
+        Connection con=connect();
+        Statement st=con.createStatement();
+        ResultSet all =st.executeQuery("Select tname from teams");
+        ArrayList <String>  allteams =new ArrayList<String>();
+        ObservableList<String> teams = FXCollections.observableArrayList();
+        while(all.next()) {
+           allteams.add(all.getString("tname"));
+       }
+        teams.addAll(allteams);
+        action_Team.setItems(teams);
+     }
+    
+    public void all_members() throws SQLException{
+        Connection con=connect();
+        Statement st=con.createStatement();
+        ResultSet all=st.executeQuery("Select mname from members");
+        ArrayList <String> allmembers =new ArrayList<String>();
+        ObservableList<String> members=FXCollections.observableArrayList();
+        while(all.next()){
+            allmembers.add(all.getString("mname"));
+        }
+        members.addAll(allmembers);
+        action_Member.setItems(members);
+        //get_Members();
+    }
+    public void get_Members() throws SQLException{
+        String teamname=(String)action_Team.getSelectionModel().getSelectedItem();
+        int teamIdx=action_Team.getSelectionModel().getSelectedIndex();
+        if(teamIdx!=-1) {
+        Connection con=connect();
+        Statement st=con.createStatement();
+        ResultSet rs=st.executeQuery("select member from association where team='"+teamname+"'");
+        ArrayList <String> members_of_team =new ArrayList<String>();
+        ObservableList<String> members=FXCollections.observableArrayList();
+        while(rs.next()){
+           members_of_team.add(rs.getString("member")); 
+        }
+        members.addAll(members_of_team);
+        action_Member.setItems(members);
+        }
+    }
+    public void get_teams() throws SQLException{
+        String membername=(String)action_Member.getSelectionModel().getSelectedItem();
+         int MemberIdx=action_Member.getSelectionModel().getSelectedIndex();
+        if(MemberIdx!=-1) {
+        Connection con=connect();
+        Statement st=con.createStatement();
+        ResultSet rs=st.executeQuery("select team from association where member='"+membername+"'");
+        ArrayList <String> teams_associated_member =new ArrayList<String>();
+        ObservableList<String> members=FXCollections.observableArrayList();
+        while(rs.next()){
+           teams_associated_member.add(rs.getString("team")); 
+        }
+        members.addAll(teams_associated_member);
+        action_Team.setItems(members);
+    }
     }
     
     
@@ -786,8 +890,8 @@ public class FXMLDocumentController implements Initializable {
     }
     // removeAssociation button is disabled when user clicks on left side box
     public void disableRemoveAssociation() {
-        teams_removeAssociation.setDisable(true);
-        teams_addAssociation.setDisable(false);
+        teams_removeAssociation.setDisable(false);
+        teams_addAssociation.setDisable(true);
     }
     //application is closed
     @FXML
@@ -819,7 +923,7 @@ public class FXMLDocumentController implements Initializable {
         ConsoleClass obj = new ConsoleClass();
         obj.consoleInclusionFactor(this);
     }
-    public void ActionSelected() throws SQLException {
+    public void ActionSelected() throws SQLException, ClassNotFoundException {
         String item = getAction_actionItems().getSelectionModel().getSelectedItem();
         actionItemClass obj = new actionItemClass();
         obj.displayActionItemScreen(this, item);

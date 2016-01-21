@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -48,43 +49,63 @@ public class ConsoleClass {
         }
         
         System.out.println(data);
+        storeActionItem();
     }
-//    public void storeActionItem() throws ClassNotFoundException {
-//        System.out.println("storing into file");
-//        try {
-//            FileOutputStream fout = new FileOutputStream("actionitems.txt");
-//            ObjectOutputStream out = new ObjectOutputStream(fout);
-//            out.writeObject(data);
-//            fout.close();
-//        }
-//        catch(IOException e) {
-//            e.printStackTrace();
-//        }
-//        
-//    }
-//    public void readActionItem() throws ClassNotFoundException {
-//        System.out.println("reading data from file");
-//        Hashtable<String,ArrayList<String>> data2 = new Hashtable<>();
-//        try {
-//            FileInputStream fin = new FileInputStream("actionitems.txt");
-//            ObjectInputStream in = new ObjectInputStream(fin);
-//            
-//            data2 = (Hashtable<String,ArrayList<String>>)in.readObject();
-//            in.close();
-//            fin.close();
-//        }
-//        catch(IOException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("********************");
-//        System.out.println(data2);
-//    }
-    public void consoleDisplay(FXMLDocumentController fx) throws SQLException {
+    public void storeActionItem() throws ClassNotFoundException {
+        System.out.println("storing into file");
+        try {
+            FileOutputStream fout = new FileOutputStream("actionitems.txt");
+            ObjectOutputStream out = new ObjectOutputStream(fout);
+            out.writeObject(data);
+            fout.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        
+    }
+    public void readActionItem(FXMLDocumentController fx) throws ClassNotFoundException {
+        System.out.println("reading data from file");
+        
+        try {
+            FileInputStream fin = new FileInputStream("actionitems.txt");
+            ObjectInputStream in = new ObjectInputStream(fin);
+            
+            fx.data2 = (Hashtable<String,ArrayList<String>>)in.readObject();
+            in.close();
+            fin.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("********************");
+        System.out.println(fx.data2);
+    }
+    public void offlineConsoleDisplay(FXMLDocumentController fx) throws ClassNotFoundException {
+        readActionItem(fx);
+        fx.itemList = FXCollections.observableArrayList();
+        System.out.println("offline console display");
+        Set<String> keys = fx.data2.keySet();
+        for(String key: keys){
+            System.out.println(key);
+            if(key!=null)
+           fx.itemList.add(key);
+        }
+        System.out.println(fx.itemList);
+        fx.console_actionItemList.setItems(fx.itemList);
+    }
+    public void consoleDisplay(FXMLDocumentController fx) throws SQLException, ClassNotFoundException {
         System.out.println("console display");
         //initializing the list everytime the display is clicked.
+        System.out.println("dbstatus = "+fx.dbStatus);
+        Connection con2 = fx.connect();
+        if(fx.dbStatus == false) {
+            offlineConsoleDisplay(fx);
+            return;
+        }
         
         fx.itemList =  FXCollections.observableArrayList();
-        Connection con2 = fx.connect();
+        
         //retrieving all the action item names from database
         String str = "SELECT name FROM sample";
         ResultSet rs = con2.createStatement().executeQuery(str);
@@ -97,6 +118,19 @@ public class ConsoleClass {
         //displays all the list of action item names to the console screen
         fx.console_actionItemList.setItems(fx.itemList); 
     }
+    
+    
+    public void offlineConsoleSelectItem(FXMLDocumentController fx,String item) {
+        System.out.println("offline console select item");
+            ArrayList<String> temp = new ArrayList<>();
+            temp = fx.data2.get(item);
+            fx.getConsole_name().setText(temp.get(0));
+            fx.getConsole_description().setText(temp.get(1));
+            fx.getConsole_resolution().setText(temp.get(2));
+            fx.getConsole_CreationDate().setText(temp.get(3));
+            fx.getConsole_dueDate().setText(temp.get(4));
+            fx.getConsole_Status().setText(temp.get(5));
+    }
 
     /**
      *
@@ -107,8 +141,13 @@ public class ConsoleClass {
     public void consoleSelectItem(FXMLDocumentController fx,String item) throws SQLException{
         System.out.println("an item is selected from console");
         
-        System.out.println(item+"hadhasgjh");
+        System.out.println(item);
         Connection con3 = fx.connect();
+        if(fx.dbStatus == false) {
+            offlineConsoleSelectItem(fx,item);
+            return;
+        }
+        
         String str = "SELECT * FROM sample where name='"+item+"'";
         ResultSet rs = con3.createStatement().executeQuery(str);
         while(rs.next()){
@@ -129,7 +168,7 @@ public class ConsoleClass {
     }
     public String consoleSelectedItem(FXMLDocumentController fx) {
       String item = fx.console_actionItemList.getSelectionModel().getSelectedItem();
-        System.out.println("inn "+item);
+        System.out.println(item);
         return item;
     }
     public void consoleSortingDirection(FXMLDocumentController fx) throws SQLException {
