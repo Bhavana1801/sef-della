@@ -664,10 +664,7 @@ public class FXMLDocumentController implements Initializable {
                   teams_Circle.setFill(Color.GREEN);
                   enableAll();
                   connect();
-//                  console_label.setText("Online");
-//                       action_label.setText("Online");
-//                       members_label.setText("Online");
-//                       teams_label.setText("Online");
+
                      isOnline = true;
               }
               else {
@@ -692,6 +689,7 @@ public class FXMLDocumentController implements Initializable {
             
             if(dbStatus == true || isOnline == true) {
                 try {
+                    System.out.println("in IF condition");
                  connect();
                  enableAll();
                     consoleDisplay();
@@ -785,6 +783,8 @@ public class FXMLDocumentController implements Initializable {
     //select an item from console and if we click action item screen,details are displayed
     public void displayActionItemScreen() throws SQLException, ClassNotFoundException {
         String item = console_actionItemList.getSelectionModel().getSelectedItem();
+        all_teams();
+        all_members();
         if(item != null && !item.isEmpty())
             getAction_Name().setDisable(true);
         actionItemClass obj = new actionItemClass();
@@ -809,6 +809,7 @@ public class FXMLDocumentController implements Initializable {
      }
     
     public void all_members() throws SQLException{
+        System.out.println("all members");
         Connection con=connect();
         Statement st=con.createStatement();
         ResultSet all=st.executeQuery("Select mname from members");
@@ -823,6 +824,7 @@ public class FXMLDocumentController implements Initializable {
     }
     public void get_Members() throws SQLException{
         String teamname=(String)action_Team.getSelectionModel().getSelectedItem();
+        System.out.println(teamname);
         int teamIdx=action_Team.getSelectionModel().getSelectedIndex();
         if(teamIdx!=-1) {
         Connection con=connect();
@@ -838,6 +840,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     public void get_teams() throws SQLException{
+        System.out.println("get teams");
         String membername=(String)action_Member.getSelectionModel().getSelectedItem();
          int MemberIdx=action_Member.getSelectionModel().getSelectedIndex();
         if(MemberIdx!=-1) {
@@ -849,7 +852,9 @@ public class FXMLDocumentController implements Initializable {
         while(rs.next()){
            teams_associated_member.add(rs.getString("team")); 
         }
+        System.out.println(teams_associated_member);
         members.addAll(teams_associated_member);
+        System.out.println(members);
         action_Team.setItems(members);
     }
     }
@@ -942,7 +947,7 @@ public class FXMLDocumentController implements Initializable {
     public void retreivemember() throws SQLException{
          members m2= new members();
         ObservableList<String> allmember = FXCollections.observableArrayList();
-        allmember=m2.retrievemembers();
+        allmember=m2.retrievemembers(this);
         members_indiv.setItems(allmember);
     }
     
@@ -952,14 +957,14 @@ public class FXMLDocumentController implements Initializable {
      ObservableList<String> availableteam = FXCollections.observableArrayList();
      String name=members_indiv.getSelectionModel().getSelectedItem();
       System.out.println(name);
-     availableteam=m3.AvailableTeams(name);
+     availableteam=m3.AvailableTeams(name,this);
       members_avail.setItems(availableteam);
       showCurrentTeams(name);
     }
     public void showCurrentTeams(String name) throws SQLException{
         members m4=new members();
         ObservableList<String> currentteam = FXCollections.observableArrayList();
-      currentteam=m4.currentTeams(name);
+      currentteam=m4.currentTeams(name,this);
       members_current.setItems(currentteam);
     }
     public void addAffiliation() throws SQLException {    
@@ -979,13 +984,15 @@ public class FXMLDocumentController implements Initializable {
         teams_removeFromList.setDisable(true);
         teams_addAssociation.setDisable(true);
         teams_removeAssociation.setDisable(true);
-        showAvailableMembers();
+//        showAvailableMembers();
+        retrieveteams();
     }
     public void membersScreen() throws SQLException {
         members_addToList.setDisable(true);
         members_removeFromList.setDisable(true);
         members_addAffliation.setDisable(true);
         members_removeAffliation.setDisable(true);
+       retreivemember();
 
         
     }
@@ -997,7 +1004,7 @@ public class FXMLDocumentController implements Initializable {
      public void retrieveteams() throws SQLException{
          teams t2= new teams();
         ObservableList<String> allteams = FXCollections.observableArrayList();
-        allteams=t2.retrieveteams();
+        allteams=t2.retrieveteams(this);
         teams_known.setItems(allteams);
     }
       public void showAvailableMembers() throws SQLException {

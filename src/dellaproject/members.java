@@ -12,15 +12,19 @@ public class members{
  public void addmembers(FXMLDocumentController fx) throws SQLException{
         //FXMLDocumentController fx=new FXMLDocumentController();
         Connection connection =  fx.connect();
+        System.out.println("in add members");
         String memberName = fx.getMembers_name().getText();
         Statement st = connection.createStatement();
         st.executeUpdate("insert into members VALUES('"+memberName+"')");
+        System.out.println("in add members end");
         fx.retreivemember();
     }
-    public ObservableList<String> retrievemembers() throws SQLException{
-       FXMLDocumentController fx1=new FXMLDocumentController();
+    public ObservableList<String> retrievemembers(FXMLDocumentController fx1) throws SQLException{
+//       FXMLDocumentController fx1=new FXMLDocumentController();
+        System.out.println("in retrieve members");
        Connection connection1 =fx1.connect();
        Statement st1=connection1.createStatement();
+       
        ResultSet allmembers = st1.executeQuery("select mname from members");
        ArrayList <String> all_members=new ArrayList <String>();      
        ObservableList<String> membernames = FXCollections.observableArrayList();
@@ -41,9 +45,9 @@ public class members{
        fx3.getMembers_avail().setItems(null);
        fx3.getMembers_current().setItems(null);
       }
-    public ObservableList<String> AvailableTeams(String selected_member) throws SQLException{
-        FXMLDocumentController fx4=new FXMLDocumentController();
-        Connection connection4=fx4.connect();
+    public ObservableList<String> AvailableTeams(String selected_member,FXMLDocumentController fx) throws SQLException{
+//        FXMLDocumentController fx4=new FXMLDocumentController();
+        Connection connection4=fx.connect();
         Statement Available=connection4.createStatement();
         ResultSet rs=Available.executeQuery("select tname from teams where tname  not in (select team from association where member='"+selected_member+"')");
         ArrayList <String> available_members=new ArrayList <String>();
@@ -73,9 +77,9 @@ public class members{
         fx6.showAvailableTeams();
         fx6.showCurrentTeams(member);
      }
-     public ObservableList<String> currentTeams(String selected_member) throws SQLException{
-         FXMLDocumentController fx7=new FXMLDocumentController();
-          Connection connection7=fx7.connect();
+     public ObservableList<String> currentTeams(String selected_member,FXMLDocumentController fx) throws SQLException{
+//         FXMLDocumentController fx7=new FXMLDocumentController();
+          Connection connection7=fx.connect();
           Statement st=connection7.createStatement();
           ResultSet rs=st.executeQuery("select team from association where member='"+selected_member+"'");
         ArrayList <String> currentteams=new ArrayList<String>();

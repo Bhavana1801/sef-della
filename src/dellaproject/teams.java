@@ -17,9 +17,9 @@ public class teams{
         st.executeUpdate("insert into teams VALUES('"+team_name+"')");
         fx.retrieveteams();
     }
-    public ObservableList<String> retrieveteams() throws SQLException{
-       FXMLDocumentController fx1=new FXMLDocumentController();
-       Connection connection1 =fx1.connect();
+    public ObservableList<String> retrieveteams(FXMLDocumentController fx) throws SQLException{
+//       FXMLDocumentController fx1=new FXMLDocumentController();
+       Connection connection1 =fx.connect();
        Statement st1=connection1.createStatement();
        ResultSet allteams = st1.executeQuery("select tname from teams");
        ArrayList <String> all_teams=new ArrayList <String>();      

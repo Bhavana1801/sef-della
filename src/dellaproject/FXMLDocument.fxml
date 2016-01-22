@@ -183,7 +183,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <ComboBox fx:id="action_Team" layoutX="471.0" layoutY="414.0" onAction="#get_Members">
+            <ComboBox fx:id="action_Team" layoutX="471.0" layoutY="414.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
